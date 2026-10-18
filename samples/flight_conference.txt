@@ -1,0 +1,17 @@
+Delta Air Lines e-Ticket Receipt
+Issue Date: 2026-10-04
+Passenger: Morgan Taylor
+Ticket Number: 006-2489102941
+Booking Ref / PNR: K9X7ZQ
+
+Flight DL1492: SEA -> SFO (2026-10-09)
+Flight DL1804: SFO -> SEA (2026-10-15)
+
+Base Airfare:             $384.00
+US Transportation Tax:     $28.80
+Passenger Facility Charge:  $9.00
+Security Fee:              $11.20
+TOTAL TICKET FARE:        $433.00
+
+Payment: Amex ending in 1004.
+Purpose: Travel to attend Open Source AI Developer Summit in San Francisco.

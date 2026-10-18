@@ -1,0 +1,17 @@
+Apple Store - University Village
+2651 NE 49th St, Seattle, WA
+Date: 2026-10-08 14:22
+Receipt #: R382910419
+
+Item:
+Apple Studio Display 27-inch 5K Retina        $1,499.00
+Thunderbolt 4 Pro Cable (1.8m)                   $129.00
+USB-C to MagSafe 3 Cable (2m)                     $49.00
+--------------------------------------------------------
+Subtotal:                                     $1,677.00
+WA State Sales Tax (10.25%):                    $171.89
+TOTAL PAID:                                   $1,848.89
+
+Card: Apple Card ending in 7719
+Business Purpose: Primary dedicated high-resolution monitor for client mobile app QA & UI design.
+Eligible for IRS Section 179 de minimis safe harbor deduction.

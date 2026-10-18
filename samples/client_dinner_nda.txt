@@ -1,0 +1,17 @@
+The Blue Fin Bistro
+123 Waterfront Way, Seattle, WA
+Date: 2026-10-12
+Server: Alex
+Table: 4
+
+1x Pan-Seared Halibut      $38.00
+1x Ribeye Steak            $46.00
+2x Sparkling Water         $12.00
+1x Shared Dessert Platter  $18.00
+Subtotal:                 $114.00
+Tax (10%):                 $11.40
+Tip (20%):                 $22.80
+TOTAL:                    $148.20
+
+Payment Method: Visa ending in 4921
+Note: Dinner with Sarah Jenkins (Client: Acme Health Systems) discussing Project Apex AI integration contract under NDA.

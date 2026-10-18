@@ -1,0 +1,18 @@
+DigitalOcean Holdings, Inc.
+101 Avenue of the Americas, New York, NY
+INVOICE #DO-9823412
+Invoice Date: 2026-10-01
+Account: engineering@devsolopreneur.io
+
+Description                                   Amount
+------------------------------------------------------
+Droplet 4 vCPU / 8GB RAM (Production API)     $48.00
+Managed PostgreSQL Database Cluster           $30.00
+Spaces Object Storage & CDN Transfer          $12.50
+------------------------------------------------------
+Subtotal:                                     $90.50
+Tax:                                           $0.00
+TOTAL AMOUNT CHARGED:                         $90.50
+
+Paid via Mastercard ending in 8112.
+Purpose: Cloud hosting infrastructure for client staging environment.

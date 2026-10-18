@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrivateReceipt • Zero-Leak Expense Intelligence</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-shield">🔒</div>
+        <div>
+          <h1>PrivateReceipt <span class="tag-gemma">Gemma 2 Open-Weight AI</span></h1>
+          <p class="subtitle">Zero-Leak Local Expense & IRS Deductibility Intelligence for Freelancers</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="privacy-badge">
+          <span class="pulse-dot"></span>
+          Air-Gapped Local Mode Active
+        </div>
+      </div>
+    </header>
+
+    <!-- Metrics Bar -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total Gross Spend</div>
+        <div class="metric-val" id="metricTotalSpend">$0.00</div>
+        <div class="metric-hint">Across all processed receipts</div>
+      </div>
+      <div class="metric-card highlight-green">
+        <div class="metric-label">Tax Deductible Amount</div>
+        <div class="metric-val" id="metricTaxDeductible">$0.00</div>
+        <div class="metric-hint">Calculated per IRS Schedule C rules</div>
+      </div>
+      <div class="metric-card highlight-blue">
+        <div class="metric-label">Est. Tax Savings (25% Bracket)</div>
+        <div class="metric-val" id="metricTaxSavings">$0.00</div>
+        <div class="metric-hint">Money back in your pocket</div>
+      </div>
+      <div class="metric-card highlight-amber">
+        <div class="metric-label">NDA & Client Items Shielded</div>
+        <div class="metric-val" id="metricShielded">0</div>
+        <div class="metric-hint">Protected from accountant/public leak</div>
+      </div>
+    </section>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Input Panel -->
+      <section class="panel input-panel">
+        <div class="panel-header">
+          <h2>📥 Add Receipt or Invoice</h2>
+          <div class="sample-loader">
+            <label for="sampleSelect">Load Sample:</label>
+            <select id="sampleSelect">
+              <option value="">-- Choose a bundled sample --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="textarea-wrapper">
+          <textarea id="receiptInput" placeholder="Paste raw receipt text, invoice OCR dump, email confirmation, or flight ticket receipt here..."></textarea>
+        </div>
+
+        <div class="input-actions">
+          <button class="btn btn-primary" id="btnAnalyze">
+            <span class="btn-icon">⚡</span> Analyze with Local Gemma
+          </button>
+          <button class="btn btn-secondary" id="btnClear">Clear</button>
+        </div>
+      </section>
+
+      <!-- Results & Actions Panel -->
+      <section class="panel results-panel">
+        <div class="panel-header">
+          <h2>📊 Itemized Deduction Schedule</h2>
+          <div class="view-controls">
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleRedact" checked>
+              <span class="slider"></span>
+              <span class="toggle-label">Sanitize Client & NDA Details for CPA</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Receipt Table -->
+        <div class="table-container">
+          <table class="receipt-table">
+            <thead>
+              <tr>
+                <th>Receipt ID</th>
+                <th>Date</th>
+                <th>Merchant</th>
+                <th>Tax Category</th>
+                <th>Total</th>
+                <th>Deductible</th>
+                <th>Privacy Status</th>
+                <th>IRS Audit Defense Notes</th>
+              </tr>
+            </thead>
+            <tbody id="receiptsTableBody">
+              <tr class="empty-row">
+                <td colspan="8">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Export Toolbar -->
+        <div class="export-toolbar">
+          <span class="export-label">Export Audit-Ready Files:</span>
+          <button class="btn btn-sm" id="btnExportCSV">📥 QuickBooks CSV</button>
+          <button class="btn btn-sm" id="btnExportStandardCSV">📊 Standard CSV</button>
+          <button class="btn btn-sm" id="btnExportMarkdown">📄 Markdown Report</button>
+          <button class="btn btn-sm" id="btnExportJSON">{ } JSON</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-note">
+        Built for the <strong>Hacktoberfest 2026 Open-Source AI Challenge: Week 2 (Side Hustle)</strong>.
+        Powered by open weights (Gemma 2) & zero-leak local inference.
+      </div>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
