@@ -138,8 +138,8 @@ The Python engine runs entirely on the **Python standard library** (Python 3.9+)
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/XiaoArnav/ghost-ledger.git
-cd ghost-ledger
+git clone https://github.com/XiaoArnav/ghostledger.git
+cd ghostledger
 pip install .
 ```
 
@@ -232,7 +232,7 @@ Open **[http://localhost:8765](http://localhost:8765)** in your browser to exper
 ### 1-Click Deploy to Vercel
 Deploy your own sovereign instance of GhostLedger to Vercel with zero configuration:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/XiaoArnav/ghost-ledger)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/XiaoArnav/ghostledger)
 
 ---
 

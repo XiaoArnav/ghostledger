@@ -11,7 +11,7 @@ So I built **GhostLedger // 2100**: a 100% air-gapped, zero-leak receipt and exp
 - 🚀 **Live Web App:** [https://ghostledger-topaz.vercel.app](https://ghostledger-topaz.vercel.app)
 - ⚡ **Mission Manifesto:** [https://ghostledger-topaz.vercel.app/landing.html](https://ghostledger-topaz.vercel.app/landing.html)
 - 🖥️ **Command Center Workbench:** [https://ghostledger-topaz.vercel.app/workbench.html](https://ghostledger-topaz.vercel.app/workbench.html)
-- 💻 **Open-Source Code (MIT):** [https://github.com/XiaoArnav/ghost-ledger](https://github.com/XiaoArnav/ghost-ledger)
+- 💻 **Open-Source Code (MIT):** [https://github.com/XiaoArnav/ghostledger](https://github.com/XiaoArnav/ghostledger)
 
 ---
 
@@ -162,12 +162,12 @@ GhostLedger is indexed across official Hacktoberfest, DEV, and GitHub channels u
 ## 🚀 Try It Out
 
 - **Live Web App:** [https://ghostledger-topaz.vercel.app](https://ghostledger-topaz.vercel.app)
-- **Source Code & Test Suite (15/15 Passing):** [https://github.com/XiaoArnav/ghost-ledger](https://github.com/XiaoArnav/ghost-ledger)
+- **Source Code & Test Suite (15/15 Passing):** [https://github.com/XiaoArnav/ghostledger](https://github.com/XiaoArnav/ghostledger)
 
 You can also run it locally in 10 seconds (standard Python library only, zero pip installs needed):
 ```bash
-git clone https://github.com/XiaoArnav/ghost-ledger.git
-cd ghost-ledger
+git clone https://github.com/XiaoArnav/ghostledger.git
+cd ghostledger
 python3 -m privatereceipt.cli demo
 python3 -m privatereceipt.cli serve --port 8765
 ```

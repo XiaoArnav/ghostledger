@@ -26,8 +26,8 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://ghostledger-topaz.vercel.app"
-"Repository" = "https://github.com/XiaoArnav/ghost-ledger"
-"Bug Tracker" = "https://github.com/XiaoArnav/ghost-ledger/issues"
+"Repository" = "https://github.com/XiaoArnav/ghostledger"
+"Bug Tracker" = "https://github.com/XiaoArnav/ghostledger/issues"
 
 [project.scripts]
 ghostledger = "privatereceipt.cli:main"
