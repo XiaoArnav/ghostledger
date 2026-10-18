@@ -176,6 +176,27 @@ body {
   box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
+.nav-manifesto-btn {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 119, 182, 0.3));
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.nav-manifesto-btn:hover {
+  background: linear-gradient(135deg, var(--accent-cyan), #0096c7);
+  color: #02040a;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+}
+
 .pulse-dot {
   width: 8px;
   height: 8px;

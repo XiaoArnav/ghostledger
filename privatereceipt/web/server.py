@@ -26,14 +26,17 @@ class PrivateReceiptHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
-        if url.path == "/":
+        if url.path in ["/", "/index"]:
             self.path = "/index.html"
-            return super().do_GET()
-        elif url.path in ["/style.css", "/app.js", "/index.html"]:
             return super().do_GET()
         elif url.path == "/api/samples":
             self._handle_get_samples()
         else:
+            clean_path = url.path.lstrip("/")
+            target_file = os.path.abspath(os.path.join(STATIC_DIR, clean_path))
+            if target_file.startswith(os.path.abspath(STATIC_DIR)) and os.path.isfile(target_file):
+                self.path = "/" + clean_path
+                return super().do_GET()
             self.send_error(404, "Not Found")
 
     def do_POST(self):
