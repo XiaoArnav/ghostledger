@@ -65,8 +65,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function readFile(file) {
+    const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif|tiff)$/i.test(file.name);
+    if (isImage) {
+      receiptInput.value = `⏳ Extracting text from ${file.name} using private client-side OCR...`;
+      if (window.Tesseract) {
+        Tesseract.recognize(file, 'eng')
+          .then(({ data: { text } }) => {
+            receiptInput.value = text.trim() || `[Image: ${file.name}]\nNo legible text detected. Please verify or paste manually.`;
+          })
+          .catch(err => {
+            console.error("OCR error:", err);
+            receiptInput.value = `[Image: ${file.name}]\nOCR processing failed. Please paste text directly.`;
+          });
+      } else {
+        receiptInput.value = `[Image: ${file.name}]\nImage uploaded. OCR script loading... please wait a moment and re-upload, or paste text directly.`;
+      }
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = (e) => { receiptInput.value = e.target.result; };
+    reader.onload = (e) => {
+      const content = e.target.result;
+      receiptInput.value = content;
+    };
     reader.readAsText(file);
   }
 
