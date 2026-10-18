@@ -11,20 +11,20 @@ from .exporter import ExpenseExporter
 
 def print_banner():
     banner = r"""
-  ____       _            _       ____               _       _   
- |  _ \ _ __(_)_   ____ _| |_ ___|  _ \ ___  ___ ___(_)_ __ | |_ 
- | |_) | '__| \ \ / / _` | __/ _ \ |_) / _ \/ __/ _ \ | '_ \| __|
- |  __/| |  | |\ V / (_| | ||  __/  _ <  __/ (_|  __/ | |_) | |_ 
- |_|   |_|  |_| \_/ \__,_|\__\___|_| \_\___|\___\___|_| .__/ \__|
-                                                       |_|        
-   Zero-Leak Local Receipt & Expense Intelligence • Powered by Gemma
+   ____ _               _   _               _                  
+  / ___| |__   ___  ___| |_| |    ___  __ _| | __ _  ___ _ __  
+ | |  _| '_ \ / _ \/ __| __| |   / _ \/ _` | |/ _` |/ _ \ '__| 
+ | |_| | | | | (_) \__ \ |_| |__|  __/ (_| | | (_| |  __/ |    
+  \____|_| |_|\___/|___/\__|_____\___|\__,_|_|\__, |\___|_|    
+                                              |___/            
+   GhostLedger // 2100 • Zero-Leak Expense Defense • Powered by Gemma
 """
     print(banner)
 
 
 def run_demo(engine: GemmaEngine, samples_dir: str):
     """Runs a complete demo over bundled sample receipts."""
-    print("🚀 Running PrivateReceipt Demo Pipeline...\n")
+    print("🚀 Running GhostLedger Demo Pipeline...\n")
     if not os.path.exists(samples_dir):
         print(f"❌ Samples directory not found at: {samples_dir}")
         return
