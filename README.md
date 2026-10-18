@@ -15,17 +15,6 @@
 
 ---
 
-### 🌐 Live Production Deployments & Access Points
-
-| Resource | Direct Link | Description |
-| :--- | :--- | :--- |
-| 🚀 **Mission Manifesto (Live)** | [ghostledger-topaz.vercel.app/landing.html](https://ghostledger-topaz.vercel.app/landing.html) | Cinematic 3D hyperspace warp drive, ROI tax calculator & Unix holodeck |
-| ⚡ **Command Center Workbench (Live)** | [ghostledger-topaz.vercel.app/](https://ghostledger-topaz.vercel.app/) | High-density financial cockpit, IRS audit radar & live ledger stream |
-| 💻 **Local Air-Gapped Daemon** | [http://localhost:8765](http://localhost:8765) | 100% offline localhost daemon running on standard Python 3.9+ |
-| 📦 **GitHub Repository** | [github.com/XiaoArnav/ghost-ledger](https://github.com/XiaoArnav/ghost-ledger) | Full open-source codebase, test suite, and CLI source |
-
----
-
 ## 💡 The First-Principles Problem & The Solopreneur Opportunity
 
 Freelancers, independent consultants, and boutique agency founders face a recurring financial and legal crisis every quarter:
