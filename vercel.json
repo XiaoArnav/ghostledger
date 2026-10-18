@@ -16,6 +16,14 @@
       "dest": "api/$1.py"
     },
     {
+      "src": "/workbench.html",
+      "dest": "public/workbench.html"
+    },
+    {
+      "src": "/workbench",
+      "dest": "public/workbench.html"
+    },
+    {
       "src": "/landing.html",
       "dest": "public/landing.html"
     },

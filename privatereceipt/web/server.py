@@ -30,6 +30,9 @@ class PrivateReceiptHandler(http.server.SimpleHTTPRequestHandler):
         if url.path in ["/", "/index"]:
             self.path = "/index.html"
             return super().do_GET()
+        elif url.path in ["/workbench", "/app"]:
+            self.path = "/workbench.html"
+            return super().do_GET()
         elif url.path == "/api/samples":
             self._handle_get_samples()
         else:
