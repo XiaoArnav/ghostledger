@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let receipts = [];
   let sampleData = {};
   let audioEnabled = true;
+  let searchTerm = '';
 
-  // Web Audio Context for zero-dependency sci-fi sound design
+  // Web Audio Context for zero-dependency cyber haptic design
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioCtx = AudioContext ? new AudioContext() : null;
 
@@ -14,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const now = audioCtx.currentTime;
 
       if (type === 'beep') {
-        // Subtle cybernetic haptic click (damped 35ms bandpass impulse)
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         const filter = audioCtx.createBiquadFilter();
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.start(now);
         osc.stop(now + 0.04);
       } else if (type === 'scan') {
-        // Deep sub-bass pulse + low-pass resonant data sweep
         const osc = audioCtx.createOscillator();
         const sub = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -69,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.stop(now + 0.45);
         sub.stop(now + 0.45);
       } else if (type === 'shield') {
-        // Cybernetic air-tight mechanical lock / shutter thump
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         const filter = audioCtx.createBiquadFilter();
@@ -97,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const sampleSelect = document.getElementById('sampleSelect');
+  // Bind DOM Elements
   const receiptInput = document.getElementById('receiptInput');
   const textareaWrapper = document.getElementById('textareaWrapper');
   const btnAnalyze = document.getElementById('btnAnalyze');
@@ -109,17 +107,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoryPills = document.getElementById('categoryPills');
   const btnAudioToggle = document.getElementById('btnAudioToggle');
   const hudStatus = document.getElementById('hudStatus');
+  const consoleLogBody = document.getElementById('consoleLogBody');
+  const tableSearch = document.getElementById('tableSearch');
 
   const metricTotalSpend = document.getElementById('metricTotalSpend');
   const metricTaxDeductible = document.getElementById('metricTaxDeductible');
   const metricTaxSavings = document.getElementById('metricTaxSavings');
   const metricShielded = document.getElementById('metricShielded');
+  const metricCount = document.getElementById('metricCount');
+  const metricEfficiency = document.getElementById('metricEfficiency');
 
   const btnExportCSV = document.getElementById('btnExportCSV');
   const btnExportStandardCSV = document.getElementById('btnExportStandardCSV');
   const btnExportMarkdown = document.getElementById('btnExportMarkdown');
   const btnExportJSON = document.getElementById('btnExportJSON');
   const btnCopyCPA = document.getElementById('btnCopyCPA');
+
+  function logToConsole(cmd, text) {
+    if (!consoleLogBody) return;
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML = `<span class="log-prompt">$</span> <strong>${escapeHtml(cmd)}</strong> ${text ? escapeHtml(text) : ''}`;
+    consoleLogBody.appendChild(line);
+    consoleLogBody.scrollTop = consoleLogBody.scrollHeight;
+  }
 
   // Audio Toggle
   btnAudioToggle.addEventListener('click', () => {
@@ -133,21 +144,20 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(r => r.json())
     .then(data => {
       sampleData = data.samples || {};
-      for (const [filename, content] of Object.entries(sampleData)) {
-        const opt = document.createElement('option');
-        opt.value = filename;
-        opt.textContent = filename.replace('.txt', '').replace(/_/g, ' ');
-        sampleSelect.appendChild(opt);
-      }
+      logToConsole("ghostledger init", `Loaded ${Object.keys(sampleData).length} bundled sample receipts.`);
     })
     .catch(err => console.error("Could not load samples:", err));
 
-  sampleSelect.addEventListener('change', (e) => {
-    const val = e.target.value;
-    if (val && sampleData[val]) {
-      receiptInput.value = sampleData[val];
-      playSciFiSound('beep');
-    }
+  // Quick Preset Chips
+  document.querySelectorAll('.sample-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const sampleKey = chip.getAttribute('data-sample');
+      if (sampleKey && sampleData[sampleKey]) {
+        receiptInput.value = sampleData[sampleKey];
+        playSciFiSound('beep');
+        logToConsole(`ghostledger load samples/${sampleKey}`, `[BUFFER POPULATED: ${chip.textContent}]`);
+      }
+    });
   });
 
   // 2. File Upload & Drag-and-Drop
@@ -178,11 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif|tiff)$/i.test(file.name);
     if (isImage) {
       receiptInput.value = `⏳ Extracting text from ${file.name} using private client-side OCR...`;
+      logToConsole(`ghostledger ocr ${file.name}`, `[IN-BROWSER TESSERACT.JS ENGAGED]`);
       if (window.Tesseract) {
         Tesseract.recognize(file, 'eng')
           .then(({ data: { text } }) => {
             receiptInput.value = text.trim() || `[Image: ${file.name}]\nNo legible text detected. Please enter details manually.`;
             playSciFiSound('beep');
+            logToConsole(`ghostledger ocr complete`, `Extracted ${text.length} chars.`);
           })
           .catch(err => {
             console.error("OCR error:", err);
@@ -198,11 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.onload = (e) => {
       receiptInput.value = e.target.result;
       playSciFiSound('beep');
+      logToConsole(`ghostledger load ${file.name}`, `[READ ${e.target.result.length} BYTES]`);
     };
     reader.readAsText(file);
   }
 
-  // 3. Analyze receipt with Cyber Scanning effect
+  // 3. Analyze receipt with Local Gemma
   btnAnalyze.addEventListener('click', async () => {
     const text = receiptInput.value.trim();
     if (!text) {
@@ -210,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const startTime = performance.now();
     btnAnalyze.disabled = true;
     btnAnalyze.innerHTML = '<span class="btn-icon">⚡</span> Analyzing with Gemma...';
     if (textareaWrapper) textareaWrapper.classList.add('scanning');
@@ -225,10 +239,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
       if (data.receipt) {
+        const latency = Math.round(performance.now() - startTime);
         receipts.push(data.receipt);
         renderTable();
         updateMetrics();
         playSciFiSound('beep');
+
+        const valInferenceSpeed = document.getElementById('valInferenceSpeed');
+        if (valInferenceSpeed) valInferenceSpeed.textContent = `${latency}ms`;
+        if (hudStatus) hudStatus.textContent = `PARSED // ${latency}ms LATENCY`;
+
+        logToConsole(
+          `ghostledger parse ${data.receipt.id}`,
+          `"${data.receipt.merchant}" | $${data.receipt.total_amount.toFixed(2)} -> ${data.receipt.category} (${Math.round(data.receipt.deductible_percentage * 100)}% ded.) [${latency}ms]`
+        );
       } else {
         alert(data.error || "Parsing failed");
       }
@@ -239,39 +263,66 @@ document.addEventListener('DOMContentLoaded', () => {
       btnAnalyze.disabled = false;
       btnAnalyze.innerHTML = '<span class="btn-icon">⚡</span> Analyze with Local Gemma';
       if (textareaWrapper) textareaWrapper.classList.remove('scanning');
-      if (hudStatus) hudStatus.textContent = "// ANALYSIS COMPLETE";
     }
   });
 
-  // 4. Clear & Toggle
+  // 4. Clear & Toggle & Search
   btnClear.addEventListener('click', () => {
     playSciFiSound('beep');
     receiptInput.value = '';
     receipts = [];
-    sampleSelect.value = '';
+    searchTerm = '';
+    if (tableSearch) tableSearch.value = '';
     renderTable();
     updateMetrics();
-    if (hudStatus) hudStatus.textContent = "// CLEARED";
+    if (hudStatus) hudStatus.textContent = "// STANDBY";
+    logToConsole("ghostledger reset", "[WORKBENCH CLEARED]");
   });
 
   toggleRedact.addEventListener('change', () => {
     playSciFiSound('shield');
     renderTable();
+    logToConsole("ghostledger redact toggle", `CPA Privacy Shield: ${toggleRedact.checked ? 'ENGAGED' : 'DISENGAGED'}`);
   });
+
+  if (tableSearch) {
+    tableSearch.addEventListener('input', (e) => {
+      searchTerm = e.target.value.toLowerCase().trim();
+      renderTable();
+    });
+  }
 
   // 5. Render receipts table
   function renderTable() {
     if (receipts.length === 0) {
       tableBody.innerHTML = `
         <tr class="empty-row">
-          <td colspan="9">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
+          <td colspan="9">No receipts processed yet. Click a PRESET above or drop a receipt to begin local analysis!</td>
         </tr>`;
       return;
     }
 
     const isRedacted = toggleRedact.checked;
 
-    tableBody.innerHTML = receipts.map((r, idx) => {
+    const filtered = receipts.filter(r => {
+      if (!searchTerm) return true;
+      const m = (r.merchant || '').toLowerCase();
+      const c = (r.category || '').toLowerCase();
+      const n = (r.audit_notes || '').toLowerCase();
+      const id = (r.id || '').toLowerCase();
+      return m.includes(searchTerm) || c.includes(searchTerm) || n.includes(searchTerm) || id.includes(searchTerm);
+    });
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="9">No receipts match search term "${escapeHtml(searchTerm)}".</td>
+        </tr>`;
+      return;
+    }
+
+    tableBody.innerHTML = filtered.map((r) => {
+      const origIdx = receipts.indexOf(r);
       const merchant = isRedacted ? (r.redacted_merchant || r.merchant) : r.merchant;
       const notes = isRedacted ? (r.redacted_notes || r.audit_notes) : r.audit_notes;
       const privacyBadge = r.client_confidential 
@@ -288,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td class="cell-deductible">$${r.deductible_amount.toFixed(2)} (${Math.round(r.deductible_percentage * 100)}%)</td>
           <td>${privacyBadge}</td>
           <td class="cell-notes">${escapeHtml(notes)}</td>
-          <td><button class="btn-delete" data-index="${idx}" title="Remove Entry">✕</button></td>
+          <td><button class="btn-delete" data-index="${origIdx}" title="Remove Entry">✕</button></td>
         </tr>
       `;
     }).join('');
@@ -297,14 +348,17 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', (e) => {
         playSciFiSound('beep');
         const idx = parseInt(e.target.dataset.index, 10);
-        receipts.splice(idx, 1);
+        const removed = receipts.splice(idx, 1)[0];
         renderTable();
         updateMetrics();
+        if (removed) {
+          logToConsole(`ghostledger delete ${removed.id}`, `Removed ${removed.merchant}`);
+        }
       });
     });
   }
 
-  // 6. Update metrics & category pills
+  // 6. Update metrics, radar breakdown, and category pills
   function updateMetrics() {
     const totalSpend = receipts.reduce((acc, r) => acc + r.total_amount, 0);
     const totalDeductible = receipts.reduce((acc, r) => acc + r.deductible_amount, 0);
@@ -316,6 +370,73 @@ document.addEventListener('DOMContentLoaded', () => {
     metricTaxSavings.textContent = `$${taxSavings.toFixed(2)}`;
     metricShielded.textContent = shieldedCount;
 
+    if (metricCount) {
+      metricCount.textContent = `${receipts.length} ${receipts.length === 1 ? 'RECEIPT' : 'RECEIPTS'}`;
+    }
+
+    const efficiencyPct = totalSpend > 0 ? (totalDeductible / totalSpend) * 100 : 0;
+    if (metricEfficiency) {
+      metricEfficiency.textContent = `${efficiencyPct.toFixed(1)}% CAPTURED`;
+    }
+    const valOverallEfficiency = document.getElementById('valOverallEfficiency');
+    if (valOverallEfficiency) {
+      valOverallEfficiency.textContent = `${efficiencyPct.toFixed(1)}%`;
+    }
+
+    // Schedule C Category Radar Breakdown
+    let mealsGross = 0, mealsDed = 0;
+    let softwareGross = 0, softwareDed = 0;
+    let travelGross = 0, travelDed = 0;
+    let equipmentGross = 0, equipmentDed = 0;
+
+    receipts.forEach(r => {
+      const cat = r.category || '';
+      if (cat.includes('Meals')) {
+        mealsGross += r.total_amount;
+        mealsDed += r.deductible_amount;
+      } else if (cat.includes('Software') || cat.includes('Subscription')) {
+        softwareGross += r.total_amount;
+        softwareDed += r.deductible_amount;
+      } else if (cat.includes('Travel') || cat.includes('Lodging')) {
+        travelGross += r.total_amount;
+        travelDed += r.deductible_amount;
+      } else if (cat.includes('Office') || cat.includes('Equipment')) {
+        equipmentGross += r.total_amount;
+        equipmentDed += r.deductible_amount;
+      }
+    });
+
+    const maxCat = Math.max(mealsGross, softwareGross, travelGross, equipmentGross, 50);
+
+    const barMeals = document.getElementById('barMeals');
+    const valMealsGross = document.getElementById('valMealsGross');
+    const valMealsDed = document.getElementById('valMealsDed');
+    if (barMeals) barMeals.style.width = `${Math.min(100, (mealsGross / maxCat) * 100)}%`;
+    if (valMealsGross) valMealsGross.textContent = `$${mealsGross.toFixed(2)} Gross`;
+    if (valMealsDed) valMealsDed.textContent = `→ $${mealsDed.toFixed(2)} Deductible (50%)`;
+
+    const barSoftware = document.getElementById('barSoftware');
+    const valSoftwareGross = document.getElementById('valSoftwareGross');
+    const valSoftwareDed = document.getElementById('valSoftwareDed');
+    if (barSoftware) barSoftware.style.width = `${Math.min(100, (softwareGross / maxCat) * 100)}%`;
+    if (valSoftwareGross) valSoftwareGross.textContent = `$${softwareGross.toFixed(2)} Gross`;
+    if (valSoftwareDed) valSoftwareDed.textContent = `→ $${softwareDed.toFixed(2)} Deductible`;
+
+    const barTravel = document.getElementById('barTravel');
+    const valTravelGross = document.getElementById('valTravelGross');
+    const valTravelDed = document.getElementById('valTravelDed');
+    if (barTravel) barTravel.style.width = `${Math.min(100, (travelGross / maxCat) * 100)}%`;
+    if (valTravelGross) valTravelGross.textContent = `$${travelGross.toFixed(2)} Gross`;
+    if (valTravelDed) valTravelDed.textContent = `→ $${travelDed.toFixed(2)} Deductible`;
+
+    const barEquipment = document.getElementById('barEquipment');
+    const valEquipmentGross = document.getElementById('valEquipmentGross');
+    const valEquipmentDed = document.getElementById('valEquipmentDed');
+    if (barEquipment) barEquipment.style.width = `${Math.min(100, (equipmentGross / maxCat) * 100)}%`;
+    if (valEquipmentGross) valEquipmentGross.textContent = `$${equipmentGross.toFixed(2)} Gross`;
+    if (valEquipmentDed) valEquipmentDed.textContent = `→ $${equipmentDed.toFixed(2)} Deductible`;
+
+    // Category pills
     if (receipts.length > 0) {
       const breakdown = {};
       receipts.forEach(r => {
@@ -338,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     playSciFiSound('beep');
+    logToConsole(`ghostledger export -f ${format} > ${filename}`, `[STREAMING ${receipts.length} RECEIPTS]`);
 
     fetch('/api/export', {
       method: 'POST',
@@ -373,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     playSciFiSound('shield');
+    logToConsole("ghostledger export -q -r -f markdown | pbcopy", `[CPA AUDIT REPORT COPIED TO CLIPBOARD]`);
     fetch('/api/export', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -451,45 +574,38 @@ document.addEventListener('DOMContentLoaded', () => {
         let x1 = p.x * cosY + p.z * sinY;
         let z1 = -p.x * sinY + p.z * cosY;
         let y2 = p.y * cosX - z1 * sinX;
-        let z2 = p.y * sinX + z1 * cosX + 600;
+        let z2 = p.y * sinX + z1 * cosX + 800;
 
-        if (z2 > 50) {
-          const scale = fov / z2;
-          const px = width / 2 + x1 * scale;
-          const py = height / 2 + y2 * scale;
-          projected.push({ x: px, y: py, z: z2, scale });
-        } else {
-          projected.push(null);
-        }
+        const scale = fov / z2;
+        projected.push({
+          x: width / 2 + x1 * scale,
+          y: height / 2 + y2 * scale,
+          scale: scale,
+          alpha: Math.min(1, Math.max(0.1, (1000 - z2) / 600))
+        });
       }
 
-      for (let i = 0; i < projected.length; i++) {
-        const p1 = projected[i];
-        if (!p1) continue;
-
-        for (let j = i + 1; j < projected.length; j++) {
-          const p2 = projected[j];
-          if (!p2) continue;
-
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.07)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < numPoints; i++) {
+        for (let j = i + 1; j < numPoints; j++) {
+          const dx = projected[i].x - projected[j].x;
+          const dy = projected[i].y - projected[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 140) {
-            const alpha = (1 - dist / 140) * (isSurging ? 0.4 : 0.14);
-            ctx.strokeStyle = isSurging ? `rgba(0, 255, 136, ${alpha})` : `rgba(0, 240, 255, ${alpha})`;
-            ctx.lineWidth = isSurging ? 1.5 : 1;
+          if (dist < 130) {
             ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
+            ctx.moveTo(projected[i].x, projected[i].y);
+            ctx.lineTo(projected[j].x, projected[j].y);
             ctx.stroke();
           }
         }
+      }
 
-        const nodeAlpha = Math.min(1, Math.max(0.1, (1 - p1.z / 1200)));
-        ctx.fillStyle = isSurging ? `rgba(0, 255, 136, ${nodeAlpha})` : `rgba(0, 240, 255, ${nodeAlpha * 0.7})`;
+      for (let i = 0; i < numPoints; i++) {
+        const p = projected[i];
         ctx.beginPath();
-        ctx.arc(p1.x, p1.y, Math.max(1, p1.scale * 2.5), 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, Math.max(1, p.scale * 2.2), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha * 0.7})`;
         ctx.fill();
       }
 
@@ -530,9 +646,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const cosY = Math.cos(hRotY), sinY = Math.sin(hRotY);
 
       const proj = vertices.map(v => {
-        let x = v[0] * 11;
-        let y = v[1] * 11;
-        let z = v[2] * 11;
+        let x = v[0] * 12;
+        let y = v[1] * 12;
+        let z = v[2] * 12;
 
         let x1 = x * cosY + z * sinY;
         let z1 = -x * sinY + z * cosY;
