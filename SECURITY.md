@@ -12,7 +12,7 @@ GhostLedger is architected from first principles around **sovereign data privacy
 
 If you discover a security vulnerability, privacy leak, or flaw in the privacy sanitization filters:
 1. Please do **not** open a public issue.
-2. Report the vulnerability privately via GitHub Security Advisories at [github.com/XiaoArnav/ghost-ledger/security/advisories](https://github.com/XiaoArnav/ghost-ledger/security/advisories).
+2. Report the vulnerability privately via GitHub Security Advisories at [github.com/XiaoArnav/ghostledger/security/advisories](https://github.com/XiaoArnav/ghostledger/security/advisories).
 3. Include details of the finding, reproduction steps, and potential privacy impact.
 
 We will acknowledge receipt within 24 hours and collaborate on a prompt fix and patch release.

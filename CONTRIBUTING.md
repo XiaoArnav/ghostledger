@@ -19,8 +19,8 @@ GhostLedger is an open-source, air-gapped financial intelligence tool submitted 
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/XiaoArnav/ghost-ledger.git
-cd ghost-ledger
+git clone https://github.com/XiaoArnav/ghostledger.git
+cd ghostledger
 ```
 
 ### 2. Verify Python Environment
