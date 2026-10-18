@@ -27,4 +27,7 @@ ENV/
 *.csv
 *.json
 !vercel.json
+!package.json
+!package-lock.json
 *.log
+node_modules/

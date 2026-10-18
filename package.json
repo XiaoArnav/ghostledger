@@ -1,0 +1,33 @@
+{
+  "name": "ghostledger",
+  "version": "1.0.0",
+  "description": "Zero-Leak Local Receipt & Expense Defense for Freelancers • Powered by Gemma 2",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoArnav/ghostledger.git"
+  },
+  "keywords": [
+    "expense-tracking",
+    "tax",
+    "receipts",
+    "gemma",
+    "ai",
+    "privacy"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XiaoArnav/ghostledger/issues"
+  },
+  "homepage": "https://github.com/XiaoArnav/ghostledger#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
