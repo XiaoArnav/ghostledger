@@ -1,6 +1,6 @@
-# 🔒 PrivateReceipt
+# 👻 GhostLedger // 2100
 
-> **Zero-Leak Local Receipt & Expense Intelligence for Freelancers and Solopreneurs • Powered by Gemma 2**  
+> **Zero-Leak Local Receipt & Expense Defense for Freelancers • Powered by Gemma 2**  
 > *Submitted to the [Hacktoberfest 2026 Open-Source AI Challenge: Week 2 (Side Hustle)](https://dev.to/challenges/hacktoberfest-week2-2026-10-12).*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -17,7 +17,7 @@ Freelancers, contractors, and boutique agencies face a recurring nightmare durin
 2. **Confidentiality & NDA Leaks:** Sending receipts to cloud SaaS tools (Expensify, Dext, or proprietary cloud LLM APIs) leaks confidential client names, NDA project codenames, secret meeting attendees, and credit card snippets to external servers and model training pipelines.
 3. **Crushing Unit Economics:** For a developer building a \$29 one-time expense app or a \$9/month micro-SaaS, paying \$0.03 to \$0.08 per multimodal receipt call to closed cloud APIs destroys gross margin.
 
-**PrivateReceipt solves this completely.** It runs locally on your machine using **Google's Gemma 2** open-weight model family (or local heuristics). Receipts never leave your laptop, client NDA names are automatically sanitized before handing reports to your accountant, and operating cost is exactly **\$0.00**.
+**GhostLedger solves this completely.** It runs locally on your machine using **Google's Gemma 2** open-weight model family (or local heuristics). Receipts never leave your laptop, client NDA names are automatically sanitized before handing reports to your accountant, and operating cost is exactly **\$0.00**.
 
 ---
 
@@ -100,8 +100,8 @@ flowchart TD
 
 ### 1. Clone & Setup
 ```bash
-git clone https://github.com/XiaoArnav/private-receipt.git
-cd private-receipt
+git clone https://github.com/XiaoArnav/ghost-ledger.git
+cd ghost-ledger
 ```
 
 ### 2. Run the Demo Pipeline
