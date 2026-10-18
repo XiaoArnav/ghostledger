@@ -12,7 +12,7 @@ license = { text = "MIT" }
 authors = [
     { name = "GhostLedger Contributors" }
 ]
-keywords = ["gemma2", "privacy", "receipt-scanner", "taxes", "schedule-c", "accounting", "freelance", "zero-leak", "air-gapped"]
+keywords = ["hacktoberfest", "hacktoberfest2026", "side-hustle", "gemma2", "privacy", "receipt-scanner", "taxes", "schedule-c", "accounting", "freelance", "zero-leak", "air-gapped"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
