@@ -61,6 +61,37 @@ class ExpenseExporter:
         return output.getvalue()
 
     @staticmethod
+    def to_tsv(report: ExpenseReport, redact_confidential: bool = False) -> str:
+        """Generates tab-separated values (TSV) stream ideal for Unix tools (awk, cut, join)."""
+        import io
+        output = io.StringIO()
+        writer = csv.writer(output, delimiter="\t")
+        writer.writerow([
+            "ID", "Date", "Merchant", "Category", "Total", 
+            "Currency", "Deductible_Pct", "Deductible_Amount", 
+            "Confidential", "Audit_Rationale"
+        ])
+
+        for r in report.receipts:
+            merchant = (r.redacted_merchant or r.merchant) if redact_confidential else r.merchant
+            notes = (r.redacted_notes or r.audit_notes) if redact_confidential else r.audit_notes
+            clean_notes = (notes or "").replace("\t", " ").replace("\n", " ")
+            writer.writerow([
+                r.id,
+                r.date,
+                merchant,
+                r.category.value,
+                f"{r.total_amount:.2f}",
+                r.currency,
+                f"{int(r.deductible_percentage * 100)}%",
+                f"{r.deductible_amount:.2f}",
+                "YES" if r.client_confidential else "NO",
+                clean_notes,
+            ])
+
+        return output.getvalue()
+
+    @staticmethod
     def to_json(report: ExpenseReport, redact_confidential: bool = False, indent: int = 2) -> str:
         """Generates JSON content."""
         data = report.to_dict()

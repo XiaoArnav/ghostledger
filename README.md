@@ -108,20 +108,21 @@ cd ghost-ledger
 Process the bundled sample receipts (client dinner under NDA, DigitalOcean cloud hosting, conference flight, hardware purchase) and generate sanitized accountant exports:
 
 ```bash
-python3 -m privatereceipt.cli demo
+ghostledger demo
+# or: python3 -m privatereceipt.cli demo
 ```
 
 Output:
 ```text
-  ____       _            _       ____               _       _   
- |  _ \ _ __(_)_   ____ _| |_ ___|  _ \ ___  ___ ___(_)_ __ | |_ 
- | |_) | '__| \ \ / / _` | __/ _ \ |_) / _ \/ __/ _ \ | '_ \| __|
- |  __/| |  | |\ V / (_| | ||  __/  _ <  __/ (_|  __/ | |_) | |_ 
- |_|   |_|  |_| \_/ \__,_|\__\___|_| \_\___|\___\___|_| .__/ \__|
-                                                       |_|        
-   Zero-Leak Local Receipt & Expense Intelligence • Powered by Gemma
+   ____ _               _   _               _                  
+  / ___| |__   ___  ___| |_| |    ___  __ _| | __ _  ___ _ __  
+ | |  _| '_ \ / _ \/ __| __| |   / _ \/ _` | |/ _` |/ _ \ '__| 
+ | |_| | | | | (_) \__ \ |_| |__|  __/ (_| | | (_| |  __/ |    
+  \____|_| |_|\___/|___/\__|_____\___|\__,_|_|\__, |\___|_|    
+                                              |___/            
+   GhostLedger // 2100 • Zero-Leak Expense Defense • Powered by Gemma
 
-🚀 Running PrivateReceipt Demo Pipeline...
+🚀 Running GhostLedger Demo Pipeline...
 
   ✓ Processed [REC-001] The Blue Fin Bistro      | $  148.20 | Meals & Entertainment
     🔒 [Privacy Shield Triggered] Sensitive client/NDA markers detected and sanitized.
@@ -150,19 +151,36 @@ Output:
 📄 Exported IRS audit report to:          demo_audit_report.md
 ```
 
-### 3. Launch the Local Web Dashboard
-```bash
-python3 -m privatereceipt.cli serve --port 8080
-```
-Open [http://localhost:8080](http://localhost:8080) to paste receipts, inspect live metrics, toggle the NDA Privacy Shield, and download QuickBooks-ready files.
+### 3. Unix Philosophy & CLI Pipelines
+GhostLedger follows the Unix philosophy: do one thing well, compose cleanly via text streams (`stdin`/`stdout`), and separate data from diagnostics:
 
-### 4. Running with Local Ollama (Optional)
+```bash
+# Pipe receipt text stream straight into jq
+cat samples/saas_subscription.txt | ghostledger -q -f json | jq .total_deductible
+
+# Filter meals using standard Unix awk on TSV stream
+ghostledger samples/ -f tsv | awk -F'\t' '$4 ~ /Meals/'
+
+# Stream sanitized RFC-4180 CSV with client NDA tokens redacted
+ghostledger samples/ -q -r -f csv > client_safe_expenses.csv
+
+# Launch interactive 3D local dashboard
+ghostledger serve --port 8765
+```
+
+### 4. Interactive 3D Web Dashboard
+```bash
+ghostledger serve --port 8765
+```
+Open [http://localhost:8765](http://localhost:8765) to drag-and-drop receipts or images, inspect 3D interactive tilt cards and point clouds, toggle the NDA Privacy Shield, and download audit-ready files.
+
+### 5. Running with Local Ollama (Optional)
 To use local GPU acceleration with Gemma 2:
 ```bash
 # Pull and serve Gemma 2 locally
 ollama run gemma2:2b
 ```
-PrivateReceipt automatically connects to `http://localhost:11434` when Ollama is running, and gracefully uses its deterministic rules engine when offline.
+GhostLedger automatically connects to `http://localhost:11434` when Ollama is running, and gracefully falls back to its deterministic rules engine when offline.
 
 ---
 
