@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  privatereceipt:
+  ghostledger:
     build: .
-    container_name: privatereceipt-app
+    container_name: ghostledger-app
     ports:
-      - "8080:8080"
+      - "8765:8765"
     environment:
       - OLLAMA_URL=http://ollama:11434
       - GEMMA_MODEL=gemma2:2b
@@ -15,7 +15,7 @@ services:
 
   ollama:
     image: ollama/ollama:latest
-    container_name: privatereceipt-ollama
+    container_name: ghostledger-ollama
     ports:
       - "11434:11434"
     volumes:
