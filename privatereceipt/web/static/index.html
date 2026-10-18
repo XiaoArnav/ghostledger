@@ -74,9 +74,9 @@
           <button class="btn btn-primary" id="btnAnalyze">
             <span class="btn-icon">⚡</span> Analyze with Local Gemma
           </button>
-          <input type="file" id="fileInput" accept=".txt,.csv,.json,.log,.eml" style="display:none">
+          <input type="file" id="fileInput" accept=".txt,.csv,.json,.log,.eml,image/*" style="display:none">
           <button class="btn btn-secondary" id="btnUpload">
-            <span class="btn-icon">📂</span> Upload File
+            <span class="btn-icon">📂</span> Upload File / Image
           </button>
           <button class="btn btn-secondary" id="btnClear">Clear</button>
         </div>
@@ -143,6 +143,7 @@
     </footer>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>
