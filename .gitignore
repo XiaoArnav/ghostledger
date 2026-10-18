@@ -25,6 +25,7 @@ venv/
 ENV/
 .DS_Store
 *.csv
+!demo_expenses.csv
 *.json
 !vercel.json
 *.log
