@@ -7,6 +7,7 @@
 [![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest-2026_Week_2-FF8C00.svg)](https://dev.to/challenges/hf26)
 [![Model: Gemma 2](https://img.shields.io/badge/Open--Weight-Gemma_2-4285F4.svg)](https://ai.google.dev/gemma)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-brightgreen.svg)](https://www.python.org/)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/XiaoArnav/ghost-ledger)
 
 ---
 
