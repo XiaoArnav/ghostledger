@@ -394,4 +394,187 @@ document.addEventListener('DOMContentLoaded', () => {
     div.textContent = text;
     return div.innerHTML;
   }
+
+  // ==========================================
+  // 3D INTERACTIVE VISUAL ENGINE (Vanilla Canvas)
+  // ==========================================
+
+  // 1. Interactive 3D Point-Cloud Mesh Background
+  const bgCanvas = document.getElementById('bg3d');
+  if (bgCanvas) {
+    const ctx = bgCanvas.getContext('2d');
+    let width = bgCanvas.width = window.innerWidth;
+    let height = bgCanvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = bgCanvas.width = window.innerWidth;
+      height = bgCanvas.height = window.innerHeight;
+    });
+
+    const numPoints = 55;
+    const points = [];
+    for (let i = 0; i < numPoints; i++) {
+      points.push({
+        x: (Math.random() - 0.5) * 1200,
+        y: (Math.random() - 0.5) * 800,
+        z: (Math.random() - 0.5) * 800,
+      });
+    }
+
+    let mouseX = 0, mouseY = 0;
+    let targetRotX = 0, targetRotY = 0;
+    let rotX = 0, rotY = 0;
+    let isSurging = false;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / width - 0.5) * 2;
+      mouseY = (e.clientY / height - 0.5) * 2;
+      targetRotY = mouseX * 0.45;
+      targetRotX = -mouseY * 0.45;
+    });
+
+    function render3DBackground() {
+      ctx.clearRect(0, 0, width, height);
+
+      const speed = isSurging ? 0.015 : 0.0025;
+      targetRotY += speed;
+      rotX += (targetRotX - rotX) * 0.05;
+      rotY += (targetRotY - rotY) * 0.05;
+
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+      const fov = 600;
+      const projected = [];
+
+      for (let i = 0; i < numPoints; i++) {
+        const p = points[i];
+        let x1 = p.x * cosY + p.z * sinY;
+        let z1 = -p.x * sinY + p.z * cosY;
+        let y2 = p.y * cosX - z1 * sinX;
+        let z2 = p.y * sinX + z1 * cosX + 600;
+
+        if (z2 > 50) {
+          const scale = fov / z2;
+          const px = width / 2 + x1 * scale;
+          const py = height / 2 + y2 * scale;
+          projected.push({ x: px, y: py, z: z2, scale });
+        } else {
+          projected.push(null);
+        }
+      }
+
+      for (let i = 0; i < projected.length; i++) {
+        const p1 = projected[i];
+        if (!p1) continue;
+
+        for (let j = i + 1; j < projected.length; j++) {
+          const p2 = projected[j];
+          if (!p2) continue;
+
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * (isSurging ? 0.4 : 0.14);
+            ctx.strokeStyle = isSurging ? `rgba(0, 255, 136, ${alpha})` : `rgba(0, 240, 255, ${alpha})`;
+            ctx.lineWidth = isSurging ? 1.5 : 1;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        const nodeAlpha = Math.min(1, Math.max(0.1, (1 - p1.z / 1200)));
+        ctx.fillStyle = isSurging ? `rgba(0, 255, 136, ${nodeAlpha})` : `rgba(0, 240, 255, ${nodeAlpha * 0.7})`;
+        ctx.beginPath();
+        ctx.arc(p1.x, p1.y, Math.max(1, p1.scale * 2.5), 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(render3DBackground);
+    }
+    render3DBackground();
+
+    btnAnalyze.addEventListener('click', () => {
+      isSurging = true;
+      setTimeout(() => { isSurging = false; }, 2500);
+    });
+  }
+
+  // 2. Rotating 3D Hologram Cube in Header
+  const holoCanvas = document.getElementById('hologram3d');
+  if (holoCanvas) {
+    const hctx = holoCanvas.getContext('2d');
+    const hw = holoCanvas.width;
+    const hh = holoCanvas.height;
+
+    const vertices = [
+      [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+      [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
+    ];
+    const edges = [
+      [0,1],[1,2],[2,3],[3,0],
+      [4,5],[5,6],[6,7],[7,4],
+      [0,4],[1,5],[2,6],[3,7]
+    ];
+
+    let hRotX = 0.5, hRotY = 0.5;
+    function renderHologram() {
+      hctx.clearRect(0, 0, hw, hh);
+      hRotX += 0.018;
+      hRotY += 0.025;
+
+      const cosX = Math.cos(hRotX), sinX = Math.sin(hRotX);
+      const cosY = Math.cos(hRotY), sinY = Math.sin(hRotY);
+
+      const proj = vertices.map(v => {
+        let x = v[0] * 11;
+        let y = v[1] * 11;
+        let z = v[2] * 11;
+
+        let x1 = x * cosY + z * sinY;
+        let z1 = -x * sinY + z * cosY;
+        let y2 = y * cosX - z1 * sinX;
+        let z2 = y * sinX + z1 * cosX + 50;
+
+        const scale = 36 / z2;
+        return [hw / 2 + x1 * scale, hh / 2 + y2 * scale];
+      });
+
+      const color = toggleRedact.checked ? '#00ff88' : '#00f0ff';
+      hctx.strokeStyle = color;
+      hctx.lineWidth = 1.4;
+      hctx.shadowColor = color;
+      hctx.shadowBlur = 6;
+
+      for (const [i, j] of edges) {
+        hctx.beginPath();
+        hctx.moveTo(proj[i][0], proj[i][1]);
+        hctx.lineTo(proj[j][0], proj[j][1]);
+        hctx.stroke();
+      }
+
+      requestAnimationFrame(renderHologram);
+    }
+    renderHologram();
+  }
+
+  // 3. Interactive 3D Card Tilt
+  const tiltElements = document.querySelectorAll('.metric-card, .panel');
+  tiltElements.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotateX = (-y / (rect.height / 2)) * 6;
+      const rotateY = (x / (rect.width / 2)) * 6;
+      el.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+    });
+  });
 });

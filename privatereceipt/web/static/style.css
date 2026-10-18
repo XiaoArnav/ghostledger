@@ -38,6 +38,18 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#bg3d {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
 }
 
 .app-layout {
@@ -49,6 +61,17 @@ body {
   gap: 24px;
   min-height: 100vh;
   position: relative;
+  z-index: 1;
+  perspective: 1400px;
+}
+
+.hologram-canvas {
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid var(--accent-cyan);
+  border-radius: 10px;
+  box-shadow: var(--glow-cyan);
 }
 
 /* Header */
@@ -180,9 +203,11 @@ body {
   border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 12px;
-  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, border-color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 .metric-card::before {
