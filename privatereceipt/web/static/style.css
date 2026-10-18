@@ -309,6 +309,15 @@ body {
   border-radius: 14px;
   padding: 24px;
   position: relative;
+  transform: none !important;
+  transform-style: flat !important;
+  will-change: auto;
+}
+
+.input-panel,
+.results-panel {
+  transform: none !important;
+  transform-style: flat !important;
 }
 
 .panel-header {

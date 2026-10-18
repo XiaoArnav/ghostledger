@@ -561,8 +561,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderHologram();
   }
 
-  // 3. Interactive 3D Card Tilt
-  const tiltElements = document.querySelectorAll('.metric-card, .panel');
+  // 3. Interactive 3D Card Tilt (Top metric cards only; input & schedule panels remain completely stable)
+  const tiltElements = document.querySelectorAll('.metric-card');
   tiltElements.forEach(el => {
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
