@@ -41,6 +41,16 @@ body {
   overflow-x: hidden;
 }
 
+.app-header,
+.metrics-grid,
+.panel-header,
+.btn,
+.badge,
+.category-pills {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 #bg3d {
   position: fixed;
   top: 0;

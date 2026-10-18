@@ -33,6 +33,10 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
   position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 /* 3D Warp Canvas */

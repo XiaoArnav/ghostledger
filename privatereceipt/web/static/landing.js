@@ -127,7 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
       targetSpeed = 9;
     });
 
-    window.addEventListener('click', () => {
+    window.addEventListener('mousedown', (e) => {
+      if (!e.target.closest('input, textarea, .term-body, code')) {
+        if (e.detail > 1) {
+          e.preventDefault();
+        }
+      }
+    });
+
+    window.addEventListener('click', (e) => {
+      // Clear any accidental window selections
+      if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+      }
       targetSpeed = 22;
       playCyberSound('warp');
       setTimeout(() => { targetSpeed = 4; }, 800);
