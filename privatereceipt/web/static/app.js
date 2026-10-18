@@ -5,9 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const sampleSelect = document.getElementById('sampleSelect');
   const receiptInput = document.getElementById('receiptInput');
   const btnAnalyze = document.getElementById('btnAnalyze');
+  const btnUpload = document.getElementById('btnUpload');
+  const fileInput = document.getElementById('fileInput');
   const btnClear = document.getElementById('btnClear');
   const toggleRedact = document.getElementById('toggleRedact');
   const tableBody = document.getElementById('receiptsTableBody');
+  const categoryPills = document.getElementById('categoryPills');
 
   const metricTotalSpend = document.getElementById('metricTotalSpend');
   const metricTaxDeductible = document.getElementById('metricTaxDeductible');
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportStandardCSV = document.getElementById('btnExportStandardCSV');
   const btnExportMarkdown = document.getElementById('btnExportMarkdown');
   const btnExportJSON = document.getElementById('btnExportJSON');
+  const btnCopyCPA = document.getElementById('btnCopyCPA');
 
   // 1. Fetch bundled samples
   fetch('/api/samples')
@@ -40,11 +44,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 2. Analyze receipt
+  // 2. File Upload & Drag-and-Drop
+  btnUpload.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) readFile(file);
+  });
+
+  receiptInput.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    receiptInput.classList.add('drag-over');
+  });
+  receiptInput.addEventListener('dragleave', () => receiptInput.classList.remove('drag-over'));
+  receiptInput.addEventListener('drop', (e) => {
+    e.preventDefault();
+    receiptInput.classList.remove('drag-over');
+    if (e.dataTransfer.files.length > 0) {
+      readFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => { receiptInput.value = e.target.result; };
+    reader.readAsText(file);
+  }
+
+  // 3. Analyze receipt
   btnAnalyze.addEventListener('click', async () => {
     const text = receiptInput.value.trim();
     if (!text) {
-      alert("Please paste receipt text or pick a sample first!");
+      alert("Please paste receipt text or upload a file first!");
       return;
     }
 
@@ -75,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. Clear workspace
+  // 4. Clear & Toggle
   btnClear.addEventListener('click', () => {
     receiptInput.value = '';
     receipts = [];
@@ -84,24 +114,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMetrics();
   });
 
-  // 4. Toggle privacy mode
-  toggleRedact.addEventListener('change', () => {
-    renderTable();
-  });
+  toggleRedact.addEventListener('change', () => renderTable());
 
   // 5. Render receipts table
   function renderTable() {
     if (receipts.length === 0) {
       tableBody.innerHTML = `
         <tr class="empty-row">
-          <td colspan="8">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
+          <td colspan="9">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
         </tr>`;
       return;
     }
 
     const isRedacted = toggleRedact.checked;
 
-    tableBody.innerHTML = receipts.map(r => {
+    tableBody.innerHTML = receipts.map((r, idx) => {
       const merchant = isRedacted ? (r.redacted_merchant || r.merchant) : r.merchant;
       const notes = isRedacted ? (r.redacted_notes || r.audit_notes) : r.audit_notes;
       const privacyBadge = r.client_confidential 
@@ -118,12 +145,23 @@ document.addEventListener('DOMContentLoaded', () => {
           <td class="cell-deductible">$${r.deductible_amount.toFixed(2)} (${Math.round(r.deductible_percentage * 100)}%)</td>
           <td>${privacyBadge}</td>
           <td class="cell-notes">${escapeHtml(notes)}</td>
+          <td><button class="btn-delete" data-index="${idx}" title="Remove entry">✕</button></td>
         </tr>
       `;
     }).join('');
+
+    // Attach row delete handlers
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(e.target.dataset.index, 10);
+        receipts.splice(idx, 1);
+        renderTable();
+        updateMetrics();
+      });
+    });
   }
 
-  // 6. Update metrics
+  // 6. Update metrics & category pills
   function updateMetrics() {
     const totalSpend = receipts.reduce((acc, r) => acc + r.total_amount, 0);
     const totalDeductible = receipts.reduce((acc, r) => acc + r.deductible_amount, 0);
@@ -134,6 +172,21 @@ document.addEventListener('DOMContentLoaded', () => {
     metricTaxDeductible.textContent = `$${totalDeductible.toFixed(2)}`;
     metricTaxSavings.textContent = `$${taxSavings.toFixed(2)}`;
     metricShielded.textContent = shieldedCount;
+
+    // Render category pills
+    if (receipts.length > 0) {
+      const breakdown = {};
+      receipts.forEach(r => {
+        breakdown[r.category] = (breakdown[r.category] || 0) + r.total_amount;
+      });
+      categoryPills.style.display = 'flex';
+      categoryPills.innerHTML = Object.entries(breakdown).map(([cat, amt]) => `
+        <span class="category-pill">${escapeHtml(cat)}: <strong>$${amt.toFixed(2)}</strong></span>
+      `).join('');
+    } else {
+      categoryPills.style.display = 'none';
+      categoryPills.innerHTML = '';
+    }
   }
 
   // 7. Export handlers
@@ -170,6 +223,27 @@ document.addEventListener('DOMContentLoaded', () => {
   btnExportStandardCSV.addEventListener('click', () => triggerExport('csv', 'itemized_tax_expenses.csv'));
   btnExportMarkdown.addEventListener('click', () => triggerExport('markdown', 'irs_audit_expense_report.md'));
   btnExportJSON.addEventListener('click', () => triggerExport('json', 'expenses_export.json'));
+
+  // 8. 1-Click Copy for CPA
+  btnCopyCPA.addEventListener('click', () => {
+    if (receipts.length === 0) {
+      alert("No receipts to copy! Analyze at least one receipt first.");
+      return;
+    }
+    fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ receipts, format: 'markdown', redact: toggleRedact.checked })
+    })
+    .then(r => r.text())
+    .then(text => {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btnCopyCPA.textContent;
+        btnCopyCPA.textContent = "✓ Copied!";
+        setTimeout(() => { btnCopyCPA.textContent = orig; }, 2000);
+      });
+    });
+  });
 
   function escapeHtml(text) {
     if (!text) return '';
