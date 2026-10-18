@@ -1,0 +1,2 @@
+# GhostLedger Python Serverless Dependencies for Vercel
+# Core engine operates with zero external packages (Python 3.9+ standard library)
