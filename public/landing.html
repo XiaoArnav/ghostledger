@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostLedger // 2100 • The Sovereign Financial Machine</title>
+  <link rel="stylesheet" href="/landing.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Hyperspace 3D Canvas -->
+  <canvas id="warpCanvas"></canvas>
+
+  <div class="landing-container">
+    <!-- Starship Telemetry Top Bar -->
+    <header class="telemetry-bar">
+      <div class="telemetry-left">
+        <span class="hud-pill"><span class="hud-dot"></span> AIR-GAPPED // 100% LOCAL</span>
+        <span class="hud-pill"><span class="hud-dot cyan"></span> INFERENCE: GEMMA 2 OPEN-WEIGHT</span>
+        <span class="hud-pill"><span class="hud-dot purple"></span> CLOUD LEAK: 0 BYTES</span>
+      </div>
+      <div class="telemetry-right">
+        <button id="btnAudioToggle" class="btn-sfx">🔊 SFX: ON</button>
+        <a href="/index.html" class="nav-cta">⚡ ENTER WORKBENCH</a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-badge">
+        <span class="badge-glow"></span>
+        <span class="badge-text">// HACKTOBERFEST 2026 • THE SOVEREIGN AI SPECIFICATION</span>
+      </div>
+
+      <h1 class="hero-title">
+        THE POST-CLOUD<br>
+        <span class="gradient-text">FINANCIAL MACHINE</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Zero cloud servers. Zero data leaks. 100% on-device IRS Schedule C tax defense powered by 
+        <strong>Google Gemma 2</strong> open-weight models and composable Unix streams.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/index.html" class="btn-action primary">
+          <span class="btn-flare"></span>
+          ⚡ LAUNCH WORKBENCH
+        </a>
+        <button id="btnScrollTerminal" class="btn-action secondary">
+          ⌨️ RUN LIVE UNIX SIMULATOR
+        </button>
+        <button id="btnScrollCalc" class="btn-action secondary">
+          📐 FIRST-PRINCIPLES ROI
+        </button>
+      </div>
+
+      <!-- Live Telemetry Grid -->
+      <div class="hud-stats-grid">
+        <div class="hud-stat-box">
+          <div class="stat-label">// NETWORK SOCKETS</div>
+          <div class="stat-number emerald">0 OPEN</div>
+          <div class="stat-desc">Zero packets transmitted off-device</div>
+        </div>
+        <div class="hud-stat-box">
+          <div class="stat-label">// MARGINAL TOKEN COST</div>
+          <div class="stat-number cyan">$0.00</div>
+          <div class="stat-desc">Perpetual free local execution</div>
+        </div>
+        <div class="hud-stat-box">
+          <div class="stat-label">// IRS AUDIT DEFENSE</div>
+          <div class="stat-number amber">SCHEDULE C</div>
+          <div class="stat-desc">Line 24b meals, Line 18 software, Sec 179</div>
+        </div>
+        <div class="hud-stat-box">
+          <div class="stat-label">// CLIENT PRIVACY</div>
+          <div class="stat-number purple">NDA SHIELD</div>
+          <div class="stat-desc">Client names sanitized for accountants</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- First Principles Manifesto (Elon Musk Style) -->
+    <section class="section manifesto-section">
+      <div class="section-tag">// FIRST PRINCIPLES THINKING</div>
+      <h2 class="section-heading">WHY CLOUD ACCOUNTING MUST DIE</h2>
+      <p class="section-lead">
+        Physics dictates that modern laptops possess billions of operations per second of neural compute. 
+        Paying monthly rent to route confidential client receipts across undersea cables is an engineering failure.
+      </p>
+
+      <div class="axiom-grid">
+        <div class="axiom-card">
+          <div class="axiom-num">AXIOM I</div>
+          <h3>The Physics of Compute</h3>
+          <p>
+            An Apple M-series or Intel/AMD chip executes Google's Gemma 2 open-weight model in under 120 milliseconds. 
+            Transmitting unencrypted PDFs across three cloud microservices to calculate a 50% meal deduction violates 
+            fundamental engineering efficiency.
+          </p>
+          <div class="axiom-footer">LOCAL INFERENCE = 0ms NETWORK OVERHEAD</div>
+        </div>
+
+        <div class="axiom-card">
+          <div class="axiom-num">AXIOM II</div>
+          <h3>The NDA Iron Curtain</h3>
+          <p>
+            High-earning contractors and agencies sign strict Non-Disclosure Agreements. The instant an invoice mentioning 
+            <em>"Client: Acme Corp - Project Apex"</em> hits a cloud SaaS API, confidential trade secrets are stored on third-party 
+            servers and absorbed into training corpora. GhostLedger masks sensitive tokens on-device.
+          </p>
+          <div class="axiom-footer">AIR-GAPPED SANITIZATION BEFORE CPA EXPORT</div>
+        </div>
+
+        <div class="axiom-card">
+          <div class="axiom-num">AXIOM III</div>
+          <h3>The Death of the Token Toll</h3>
+          <p>
+            Closed cloud APIs charge $0.03 to $0.08 per multimodal receipt call. For a solopreneur or micro-SaaS builder, 
+            this destroys profit margins. With open-weight Gemma 2 running on Ollama, your unit economics are exactly $0.00 forever.
+          </p>
+          <div class="axiom-footer">100% GROSS MARGIN FOR SOVEREIGN BUILDERS</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive First-Principles ROI Calculator -->
+    <section class="section calc-section" id="calcSection">
+      <div class="section-tag">// FIRST-PRINCIPLES MATH</div>
+      <h2 class="section-heading">THE SOVEREIGN WEALTH ENGINE</h2>
+      <p class="section-lead">
+        Calculate the exact compounding wealth returned to your bank account by switching from cloud SaaS to GhostLedger's 
+        on-device Schedule C tax extraction.
+      </p>
+
+      <div class="calc-container">
+        <div class="calc-inputs">
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <label>ANNUAL FREELANCE REVENUE</label>
+              <span class="calc-val-badge" id="lblRevenue">$120,000</span>
+            </div>
+            <input type="range" id="rngRevenue" min="30000" max="500000" step="5000" value="120000">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <label>ESTIMATED ANNUAL EXPENSES</label>
+              <span class="calc-val-badge" id="lblExpenses">$24,000</span>
+            </div>
+            <input type="range" id="rngExpenses" min="5000" max="150000" step="1000" value="24000">
+          </div>
+
+          <div class="calc-group">
+            <div class="calc-label-row">
+              <label>ESTIMATED TAX BRACKET</label>
+              <span class="calc-val-badge" id="lblTaxRate">25%</span>
+            </div>
+            <input type="range" id="rngTaxRate" min="15" max="37" step="1" value="25">
+          </div>
+        </div>
+
+        <div class="calc-results">
+          <div class="result-tile highlight">
+            <div class="res-label">// ANNUAL TAX SAVINGS DEFENDED</div>
+            <div class="res-num" id="resTaxSavings">$6,000</div>
+            <div class="res-desc">Direct IRS Schedule C tax reduction kept in your pocket</div>
+          </div>
+          <div class="result-tile">
+            <div class="res-label">// CLOUD SAAS & TOKEN FEES ELIMINATED</div>
+            <div class="res-num cyan" id="resSaasSaved">$780</div>
+            <div class="res-desc">$300/yr subscription + estimated token charges at $0.00</div>
+          </div>
+          <div class="result-tile">
+            <div class="res-label">// 5-YEAR COMPOUNDED WEALTH (AT 8% CAGR)</div>
+            <div class="res-num purple" id="resCompounded">$39,780</div>
+            <div class="res-desc">Cumulative capital retained by sovereign solopreneurship</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Cyberdeck Terminal Emulator -->
+    <section class="section terminal-section" id="terminalSection">
+      <div class="section-tag">// UNIX PHILOSOPHY HOLODECK</div>
+      <h2 class="section-heading">PIPEABLE. COMPOSABLE. STREAMABLE.</h2>
+      <p class="section-lead">
+        GhostLedger is designed like classic Unix tools: standard input, standard output, quiet mode, and clean pipes. 
+        Click any command below to watch real-time stream execution:
+      </p>
+
+      <div class="terminal-deck">
+        <div class="deck-pills">
+          <button class="term-btn active" data-cmd="json-pipe">
+            <code>cat invoice.txt | ghostledger -q -f json | jq .</code>
+          </button>
+          <button class="term-btn" data-cmd="awk-tsv">
+            <code>ghostledger samples/ -f tsv | awk -F'\t' '$4 ~ /Meals/'</code>
+          </button>
+          <button class="term-btn" data-cmd="redact-csv">
+            <code>cat client_dinner.txt | ghostledger -q -r -f csv</code>
+          </button>
+          <button class="term-btn" data-cmd="demo-audit">
+            <code>ghostledger demo</code>
+          </button>
+        </div>
+
+        <div class="term-window">
+          <div class="term-topbar">
+            <div class="term-dots">
+              <span class="tdot red"></span>
+              <span class="tdot yellow"></span>
+              <span class="tdot green"></span>
+            </div>
+            <span class="term-title">ghostledger@local-cyberdeck:~ (sh / zsh / bash)</span>
+            <span class="term-meta">POSIX COMPLIANT</span>
+          </div>
+          <pre class="term-body" id="termOutput"><span class="prompt">$ </span>cat invoice.txt | ghostledger -q -f json | jq .
+{
+  "merchant": "DigitalOcean Holdings, Inc.",
+  "total_amount": 90.50,
+  "category": "Software & Subscriptions",
+  "deductible_percentage": 1.0,
+  "deductible_amount": 90.50,
+  "irs_audit_notes": "IRS Schedule C Line 18: 100% deductible cloud hosting and software services."
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Holographic Architecture Matrix -->
+    <section class="section matrix-section">
+      <div class="section-tag">// ARCHITECTURAL MATRIX</div>
+      <h2 class="section-heading">PROPRIETARY CLOUD VS. GHOSTLEDGER 2100</h2>
+
+      <div class="table-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>DIMENSION</th>
+              <th>OLD-WORLD CLOUD SAAS</th>
+              <th>GHOSTLEDGER 2100 (SOVEREIGN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Inference Location</strong></td>
+              <td class="bad">Remote third-party cloud servers</td>
+              <td class="good">100% on-device (Gemma 2 via Ollama or local rules)</td>
+            </tr>
+            <tr>
+              <td><strong>Client NDA Protection</strong></td>
+              <td class="bad">Leaked in raw payloads to cloud vendors</td>
+              <td class="good">Automatic client & project codename sanitization</td>
+            </tr>
+            <tr>
+              <td><strong>Marginal Cost</strong></td>
+              <td class="bad">$20-$60/mo + $0.05/receipt token tax</td>
+              <td class="good">Exactly $0.00 forever (zero marginal API fee)</td>
+            </tr>
+            <tr>
+              <td><strong>Unix Composability</strong></td>
+              <td class="bad">Walled-garden web UI with closed lock-in</td>
+              <td class="good">Native stdin/stdout pipelines (jq, awk, grep, csv, tsv)</td>
+            </tr>
+            <tr>
+              <td><strong>Audit Defense</strong></td>
+              <td class="bad">Generic totals without tax justification</td>
+              <td class="good">Deterministic IRS Schedule C plain-English audit notes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Final Launch CTA -->
+    <section class="section cta-section">
+      <div class="cta-glow"></div>
+      <h2 class="cta-title">CLAIM YOUR FINANCIAL SOVEREIGNTY</h2>
+      <p class="cta-sub">
+        No cloud accounts. No API keys. No monthly subscription. Your machine, your weights, your ledger.
+      </p>
+      <div class="cta-buttons">
+        <a href="/index.html" class="btn-action primary big">
+          ⚡ ENTER NEURAL WORKBENCH NOW
+        </a>
+      </div>
+      <div class="cta-footnote">
+        OPEN-SOURCE • MIT LICENSED • BUILT FOR HACKTOBERFEST 2026
+      </div>
+    </section>
+  </div>
+
+  <script src="/landing.js"></script>
+</body>
+</html>
