@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostLedger // 2100 • Sovereign Expense & Tax Command Center</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="bg3d"></canvas>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <canvas id="hologram3d" width="48" height="48" class="hologram-canvas"></canvas>
+        <div>
+          <h1>GhostLedger <span class="tag-gemma">Gemma 2 Open-Weight</span> <span class="tag-command">COMMAND CENTER</span></h1>
+          <p class="subtitle">AIR-GAPPED LOCAL EXPENSE INTELLIGENCE • ZERO-LEAK NDA CLIENT SHIELD</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <a href="/" class="nav-manifesto-btn">🚀 MISSION MANIFESTO</a>
+        <button class="btn-audio" id="btnAudioToggle">🔊 SFX: ON</button>
+        <div class="privacy-badge">
+          <span class="pulse-dot"></span>
+          AIR-GAPPED // 100% LOCAL
+        </div>
+      </div>
+    </header>
+
+    <!-- Cockpit Telemetry Strip -->
+    <div class="cockpit-telemetry-bar">
+      <div class="telemetry-item"><span class="dot-green"></span> HARDWARE: <strong>LOCAL ON-DEVICE SILICON</strong></div>
+      <div class="telemetry-item"><span class="dot-cyan"></span> INFERENCE: <strong>GEMMA 2 OPEN-WEIGHT (ACTIVE)</strong></div>
+      <div class="telemetry-item"><span class="dot-purple"></span> ENCLAVE: <strong>NDA CLIENT REDACTION ENGAGED</strong></div>
+      <div class="telemetry-item"><span class="dot-amber"></span> COMPLIANCE: <strong>IRS SCHEDULE C (§ 162)</strong></div>
+      <div class="telemetry-item"><span class="dot-green"></span> SOCKETS: <strong>0 EXTERNAL // $0.00 TOKENS</strong></div>
+    </div>
+
+    <!-- Metrics Bar (Command Grid) -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-top">
+          <div class="metric-label">// TOTAL GROSS SPEND</div>
+          <span class="card-badge" id="metricCount">0 RECEIPTS</span>
+        </div>
+        <div class="metric-val" id="metricTotalSpend">$0.00</div>
+        <div class="metric-hint">Itemized across all processed documents</div>
+      </div>
+
+      <div class="metric-card highlight-green">
+        <div class="metric-top">
+          <div class="metric-label">// IRS TAX DEDUCTIBLE</div>
+          <span class="card-badge green" id="metricEfficiency">0.0% CAPTURED</span>
+        </div>
+        <div class="metric-val" id="metricTaxDeductible">$0.00</div>
+        <div class="metric-hint">Calculated via IRS Schedule C deduction rules</div>
+      </div>
+
+      <div class="metric-card highlight-blue">
+        <div class="metric-top">
+          <div class="metric-label">// EST. TAX CASH SAVINGS</div>
+          <span class="card-badge cyan">25% BRACKET</span>
+        </div>
+        <div class="metric-val" id="metricTaxSavings">$0.00</div>
+        <div class="metric-hint">Direct reduction in federal self-employment liability</div>
+      </div>
+
+      <div class="metric-card highlight-amber">
+        <div class="metric-top">
+          <div class="metric-label">// NDA CLIENTS SHIELDED</div>
+          <span class="card-badge amber" id="metricShieldStatus">ZERO LEAKS</span>
+        </div>
+        <div class="metric-val" id="metricShielded">0</div>
+        <div class="metric-hint">Trade secrets sanitized prior to accountant export</div>
+      </div>
+    </section>
+
+    <!-- Cockpit Split Workspace -->
+    <div class="workspace-grid">
+      <!-- Left Column: Ingestion Station -->
+      <section class="panel input-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-badge cyan">// NEURAL INGESTION</span>
+            <h2>📥 Add Receipt or Invoice</h2>
+          </div>
+          <div class="quick-samples">
+            <span class="samples-label">PRESETS:</span>
+            <button class="sample-chip" data-sample="saas_subscription.txt">DigitalOcean</button>
+            <button class="sample-chip" data-sample="client_dinner_nda.txt">Client Dinner (NDA)</button>
+            <button class="sample-chip" data-sample="flight_conference.txt">Delta Flight</button>
+            <button class="sample-chip" data-sample="hardware_depreciation.txt">Apple Rig</button>
+          </div>
+        </div>
+
+        <div class="textarea-wrapper" id="textareaWrapper">
+          <div class="scan-laser"></div>
+          <div class="hud-crosshair tl"></div>
+          <div class="hud-crosshair tr"></div>
+          <div class="hud-crosshair bl"></div>
+          <div class="hud-crosshair br"></div>
+          <textarea id="receiptInput" placeholder="Drop receipt file, image (in-browser OCR), or paste invoice raw text here..."></textarea>
+        </div>
+
+        <div class="input-actions">
+          <button class="btn btn-primary" id="btnAnalyze">
+            <span class="btn-icon">⚡</span> Analyze with Local Gemma
+          </button>
+          <input type="file" id="fileInput" accept="image/*,.txt,.pdf,.csv,.json,.log,.eml,*/*" style="display:none">
+          <button class="btn btn-secondary" id="btnUpload">
+            <span class="btn-icon">📂</span> Upload File
+          </button>
+          <button class="btn btn-secondary" id="btnClear">Clear</button>
+          <div class="hud-latency-pill">
+            <span class="pulse-dot-cyan"></span>
+            <span id="hudStatus">STANDBY // READY FOR STREAM</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Tax Audit Radar -->
+      <section class="panel radar-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-badge green">// AUDIT RADAR</span>
+            <h2>⚖️ IRS Schedule C Matrix</h2>
+          </div>
+          <span class="radar-compliance-tag">26 U.S.C. § 162</span>
+        </div>
+
+        <div class="schedule-breakdown">
+          <div class="schedule-row">
+            <div class="s-info">
+              <span class="s-title">Meals & Entertaining (Line 24b)</span>
+              <span class="s-rate capped">50% Statutory Cap</span>
+            </div>
+            <div class="s-bar-wrap">
+              <div class="s-bar meals" id="barMeals" style="width: 0%"></div>
+            </div>
+            <div class="s-meta">
+              <span id="valMealsGross">$0.00 Gross</span>
+              <span class="s-ded" id="valMealsDed">→ $0.00 Deductible</span>
+            </div>
+          </div>
+
+          <div class="schedule-row">
+            <div class="s-info">
+              <span class="s-title">Software & Cloud Hosting (Line 18)</span>
+              <span class="s-rate full">100% Ordinary & Necessary</span>
+            </div>
+            <div class="s-bar-wrap">
+              <div class="s-bar software" id="barSoftware" style="width: 0%"></div>
+            </div>
+            <div class="s-meta">
+              <span id="valSoftwareGross">$0.00 Gross</span>
+              <span class="s-ded" id="valSoftwareDed">→ $0.00 Deductible</span>
+            </div>
+          </div>
+
+          <div class="schedule-row">
+            <div class="s-info">
+              <span class="s-title">Travel & Lodging (Line 24a)</span>
+              <span class="s-rate full">100% Business Travel</span>
+            </div>
+            <div class="s-bar-wrap">
+              <div class="s-bar travel" id="barTravel" style="width: 0%"></div>
+            </div>
+            <div class="s-meta">
+              <span id="valTravelGross">$0.00 Gross</span>
+              <span class="s-ded" id="valTravelDed">→ $0.00 Deductible</span>
+            </div>
+          </div>
+
+          <div class="schedule-row">
+            <div class="s-info">
+              <span class="s-title">Section 179 Equipment & Rig</span>
+              <span class="s-rate full">100% First-Year Expensing</span>
+            </div>
+            <div class="s-bar-wrap">
+              <div class="s-bar equipment" id="barEquipment" style="width: 0%"></div>
+            </div>
+            <div class="s-meta">
+              <span id="valEquipmentGross">$0.00 Gross</span>
+              <span class="s-ded" id="valEquipmentDed">→ $0.00 Deductible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="radar-summary-strip">
+          <div class="rss-item">
+            <span class="rss-lbl">DEDUCTION CAPTURE EFFICIENCY</span>
+            <span class="rss-val green" id="valOverallEfficiency">0.0%</span>
+          </div>
+          <div class="rss-item">
+            <span class="rss-lbl">LOCAL INFERENCE SPEED</span>
+            <span class="rss-val cyan" id="valInferenceSpeed">&lt; 40ms</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Category Pills Bar -->
+    <div id="categoryPills" class="category-pills" style="display:none"></div>
+
+    <!-- Results & Actions Panel -->
+    <section class="panel results-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <span class="panel-badge amber">// AUDIT LEDGER</span>
+          <h2>📊 Itemized Deduction Schedule</h2>
+        </div>
+        <div class="ledger-controls">
+          <input type="text" id="tableSearch" class="table-search-input" placeholder="🔍 Search ledger by merchant, category, or audit note...">
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggleRedact" checked>
+            <span class="slider"></span>
+            <span class="toggle-label">Sanitize Client & NDA Details for CPA</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Receipt Table -->
+      <div class="table-container">
+        <table class="receipt-table">
+          <thead>
+            <tr>
+              <th>Receipt ID</th>
+              <th>Date</th>
+              <th>Merchant</th>
+              <th>Tax Category</th>
+              <th>Total Amount</th>
+              <th>Deductible Portion</th>
+              <th>Privacy Status</th>
+              <th>IRS Audit Defense Notes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="receiptsTableBody">
+            <tr class="empty-row">
+              <td colspan="9">No receipts processed yet. Click a PRESET above or drop a receipt to begin local analysis!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Export Toolbar -->
+      <div class="export-toolbar">
+        <div class="export-left">
+          <span class="export-label">EXPORT AUDIT-DEFENSE ARTIFACTS:</span>
+        </div>
+        <div class="export-buttons">
+          <button class="btn btn-sm btn-export" id="btnExportCSV">📥 QuickBooks CSV</button>
+          <button class="btn btn-sm btn-export" id="btnExportStandardCSV">📊 Standard CSV</button>
+          <button class="btn btn-sm btn-export" id="btnExportMarkdown">📄 Markdown Report</button>
+          <button class="btn btn-sm btn-export" id="btnExportJSON">{ } Accounting JSON</button>
+          <button class="btn btn-sm btn-export cpa-btn" id="btnCopyCPA">📋 Copy for CPA</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-Time Unix Stream Log Drawer -->
+    <div class="unix-console-drawer">
+      <div class="console-header">
+        <div class="console-title">
+          <span class="dot-green pulse"></span>
+          <span>GHOSTLEDGER UNIX STREAM LOG // STDIN ➔ STDOUT</span>
+        </div>
+        <span class="console-tag">POSIX PIPELINE ACTIVE</span>
+      </div>
+      <div class="console-log-body" id="consoleLogBody">
+        <div class="log-line"><span class="log-prompt">$</span> ghostledger daemon initialized on port 8765. Pure Unix pipeline active.</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-note">
+        Built for the <strong>Hacktoberfest 2026 Open-Source AI Challenge: Week 2 (Side Hustle)</strong>.
+        Powered by open weights (Google Gemma 2) & 100% on-device air-gapped inference.
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
