@@ -1,5 +1,2 @@
-# Core dependencies
-# Note: PrivateReceipt is built with zero mandatory external dependencies,
-# relying on the Python 3.9+ standard library.
-# Optional dependencies for local LLM integration and enhanced server features:
-# requests>=2.31.0
+# GhostLedger Python Serverless Dependencies for Vercel
+# Core engine operates with zero external packages (Python 3.9+ standard library)

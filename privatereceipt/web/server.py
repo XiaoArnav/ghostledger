@@ -11,8 +11,9 @@ from ..models import ExpenseReport, ReceiptItem, TaxCategory
 from ..gemma_engine import GemmaEngine
 from ..exporter import ExpenseExporter
 
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+PUBLIC_DIR = os.path.join(PROJECT_ROOT, "public")
+STATIC_DIR = PUBLIC_DIR if os.path.isdir(PUBLIC_DIR) else os.path.join(os.path.dirname(__file__), "static")
 SAMPLES_DIR = os.path.join(PROJECT_ROOT, "samples")
 
 engine = GemmaEngine()
