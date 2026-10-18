@@ -67,16 +67,23 @@
         </div>
 
         <div class="textarea-wrapper">
-          <textarea id="receiptInput" placeholder="Paste raw receipt text, invoice OCR dump, email confirmation, or flight ticket receipt here..."></textarea>
+          <textarea id="receiptInput" placeholder="Paste raw receipt text, invoice OCR dump, email confirmation, or drag & drop a receipt file here..."></textarea>
         </div>
 
         <div class="input-actions">
           <button class="btn btn-primary" id="btnAnalyze">
             <span class="btn-icon">⚡</span> Analyze with Local Gemma
           </button>
+          <input type="file" id="fileInput" accept=".txt,.csv,.json,.log,.eml" style="display:none">
+          <button class="btn btn-secondary" id="btnUpload">
+            <span class="btn-icon">📂</span> Upload File
+          </button>
           <button class="btn btn-secondary" id="btnClear">Clear</button>
         </div>
       </section>
+
+      <!-- Category Pills Bar -->
+      <div id="categoryPills" class="category-pills" style="display:none"></div>
 
       <!-- Results & Actions Panel -->
       <section class="panel results-panel">
@@ -104,11 +111,12 @@
                 <th>Deductible</th>
                 <th>Privacy Status</th>
                 <th>IRS Audit Defense Notes</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="receiptsTableBody">
               <tr class="empty-row">
-                <td colspan="8">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
+                <td colspan="9">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
               </tr>
             </tbody>
           </table>
@@ -121,6 +129,7 @@
           <button class="btn btn-sm" id="btnExportStandardCSV">📊 Standard CSV</button>
           <button class="btn btn-sm" id="btnExportMarkdown">📄 Markdown Report</button>
           <button class="btn btn-sm" id="btnExportJSON">{ } JSON</button>
+          <button class="btn btn-sm" id="btnCopyCPA">📋 Copy for CPA</button>
         </div>
       </section>
     </main>
