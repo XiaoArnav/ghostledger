@@ -1,51 +1,17 @@
 {
-  "version": 2,
-  "builds": [
+  "cleanUrls": true,
+  "rewrites": [
     {
-      "src": "api/*.py",
-      "use": "@vercel/python"
+      "source": "/workbench",
+      "destination": "/workbench.html"
     },
     {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/$1.py"
+      "source": "/landing",
+      "destination": "/landing.html"
     },
     {
-      "src": "/workbench.html",
-      "dest": "public/workbench.html"
-    },
-    {
-      "src": "/workbench",
-      "dest": "public/workbench.html"
-    },
-    {
-      "src": "/landing.html",
-      "dest": "public/landing.html"
-    },
-    {
-      "src": "/landing.css",
-      "dest": "public/landing.css"
-    },
-    {
-      "src": "/landing.js",
-      "dest": "public/landing.js"
-    },
-    {
-      "src": "/style.css",
-      "dest": "public/style.css"
-    },
-    {
-      "src": "/app.js",
-      "dest": "public/app.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "public/index.html"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     }
   ]
 }
