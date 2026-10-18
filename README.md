@@ -322,6 +322,22 @@ Continuous integration runs automatically on every commit across Python 3.9, 3.1
 | **Best Use of Gemma** | Employs Google's Gemma 2 open-weight models for air-gapped structured extraction and tax deduction reasoning without cloud leaks. |
 | **Best Use of DigitalOcean** | Includes automated classification for cloud infrastructure invoices and zero-dependency production deployment blueprints. |
 
+### 🏷️ Hacktoberfest 2026 Tags & Discovery Index
+
+GhostLedger is indexed across official Hacktoberfest, DEV, and GitHub channels using three distinct tag categories:
+
+1. **DEV Challenge Submission Tags:**
+   - `#hf26challenge` — Official required challenge tag for the Hacktoberfest 2026 Open-Source AI Challenge series.
+   - `#gemma` — Enters the Featured Partner Category: **Best Use of Gemma** (\$200 prize + exclusive badge).
+   - `#opensource` — Connects with the global open-source developer ecosystem.
+   - `#ai` — Indexes into the open-weight and open-source AI builders feed.
+
+2. **GitHub Repository Topics:**
+   - `hacktoberfest`, `hacktoberfest2026`, `side-hustle`, `gemma`, `gemma2`, `privacy`, `taxes`, `schedule-c`, `zero-leak`, `air-gapped`, `accounting`
+
+3. **Package & Metadata Keywords:**
+   - Declared in `pyproject.toml` and `setup.py`: `hacktoberfest`, `hacktoberfest2026`, `side-hustle`, `gemma`, `gemma2`, `privacy`, `receipt-scanner`, `taxes`, `schedule-c`, `accounting`, `freelance`, `zero-leak`, `air-gapped`.
+
 ---
 
 ## 🤝 Contributing

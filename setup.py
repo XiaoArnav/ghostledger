@@ -13,6 +13,21 @@ setup(
     },
     packages=find_packages(),
     python_requires=">=3.9",
+    keywords=[
+        "hacktoberfest",
+        "hacktoberfest2026",
+        "side-hustle",
+        "gemma",
+        "gemma2",
+        "privacy",
+        "receipt-scanner",
+        "taxes",
+        "schedule-c",
+        "accounting",
+        "freelance",
+        "zero-leak",
+        "air-gapped",
+    ],
     entry_points={
         "console_scripts": [
             "ghostledger=privatereceipt.cli:main",
