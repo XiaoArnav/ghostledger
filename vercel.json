@@ -1,3 +1,43 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/*.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/$1.py"
+    },
+    {
+      "src": "/landing.html",
+      "dest": "public/landing.html"
+    },
+    {
+      "src": "/landing.css",
+      "dest": "public/landing.css"
+    },
+    {
+      "src": "/landing.js",
+      "dest": "public/landing.js"
+    },
+    {
+      "src": "/style.css",
+      "dest": "public/style.css"
+    },
+    {
+      "src": "/app.js",
+      "dest": "public/app.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/index.html"
+    }
+  ]
 }
