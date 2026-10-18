@@ -1,9 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
   let receipts = [];
   let sampleData = {};
+  let audioEnabled = true;
+
+  // Web Audio Context for zero-dependency sci-fi sound design
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = AudioContext ? new AudioContext() : null;
+
+  function playSciFiSound(type) {
+    if (!audioEnabled || !audioCtx) return;
+    try {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+
+      if (type === 'scan') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(1440, now + 0.4);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      } else if (type === 'shield') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(330, now + 0.25);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'beep') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(987.77, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+    } catch (e) {
+      console.warn("Audio effect error:", e);
+    }
+  }
 
   const sampleSelect = document.getElementById('sampleSelect');
   const receiptInput = document.getElementById('receiptInput');
+  const textareaWrapper = document.getElementById('textareaWrapper');
   const btnAnalyze = document.getElementById('btnAnalyze');
   const btnUpload = document.getElementById('btnUpload');
   const fileInput = document.getElementById('fileInput');
@@ -11,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleRedact = document.getElementById('toggleRedact');
   const tableBody = document.getElementById('receiptsTableBody');
   const categoryPills = document.getElementById('categoryPills');
+  const btnAudioToggle = document.getElementById('btnAudioToggle');
+  const hudStatus = document.getElementById('hudStatus');
 
   const metricTotalSpend = document.getElementById('metricTotalSpend');
   const metricTaxDeductible = document.getElementById('metricTaxDeductible');
@@ -23,6 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportJSON = document.getElementById('btnExportJSON');
   const btnCopyCPA = document.getElementById('btnCopyCPA');
 
+  // Audio Toggle
+  btnAudioToggle.addEventListener('click', () => {
+    audioEnabled = !audioEnabled;
+    btnAudioToggle.textContent = audioEnabled ? "🔊 SFX: ON" : "🔇 SFX: OFF";
+    if (audioEnabled) playSciFiSound('beep');
+  });
+
   // 1. Fetch bundled samples
   fetch('/api/samples')
     .then(r => r.json())
@@ -31,21 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
       for (const [filename, content] of Object.entries(sampleData)) {
         const opt = document.createElement('option');
         opt.value = filename;
-        opt.textContent = filename.replace('.txt', '').replace(/_/g, ' ');
+        opt.textContent = `// NODE: ` + filename.replace('.txt', '').replace(/_/g, ' ').toUpperCase();
         sampleSelect.appendChild(opt);
       }
     })
-    .catch(err => console.error("Could not load samples:", err));
+    .catch(err => console.error("Could not load telemetry samples:", err));
 
   sampleSelect.addEventListener('change', (e) => {
     const val = e.target.value;
     if (val && sampleData[val]) {
       receiptInput.value = sampleData[val];
+      playSciFiSound('beep');
     }
   });
 
   // 2. File Upload & Drag-and-Drop
-  btnUpload.addEventListener('click', () => fileInput.click());
+  btnUpload.addEventListener('click', () => {
+    playSciFiSound('beep');
+    fileInput.click();
+  });
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) readFile(file);
@@ -65,45 +123,50 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function readFile(file) {
+    playSciFiSound('beep');
     const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif|tiff)$/i.test(file.name);
     if (isImage) {
-      receiptInput.value = `⏳ Extracting text from ${file.name} using private client-side OCR...`;
+      receiptInput.value = `⏳ [NEURAL OCR] Extracting matrix from ${file.name}...`;
       if (window.Tesseract) {
         Tesseract.recognize(file, 'eng')
           .then(({ data: { text } }) => {
-            receiptInput.value = text.trim() || `[Image: ${file.name}]\nNo legible text detected. Please verify or paste manually.`;
+            receiptInput.value = text.trim() || `[IMAGE NODE: ${file.name}]\nNo textual telemetry detected.`;
+            playSciFiSound('beep');
           })
           .catch(err => {
             console.error("OCR error:", err);
-            receiptInput.value = `[Image: ${file.name}]\nOCR processing failed. Please paste text directly.`;
+            receiptInput.value = `[IMAGE NODE: ${file.name}]\nOCR processing anomaly. Paste text directly.`;
           });
       } else {
-        receiptInput.value = `[Image: ${file.name}]\nImage uploaded. OCR script loading... please wait a moment and re-upload, or paste text directly.`;
+        receiptInput.value = `[IMAGE NODE: ${file.name}]\nImage uploaded. OCR initializing...`;
       }
       return;
     }
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const content = e.target.result;
-      receiptInput.value = content;
+      receiptInput.value = e.target.result;
+      playSciFiSound('beep');
     };
     reader.readAsText(file);
   }
 
-  // 3. Analyze receipt
+  // 3. Analyze receipt with Cyber Scanning effect
   btnAnalyze.addEventListener('click', async () => {
     const text = receiptInput.value.trim();
     if (!text) {
-      alert("Please paste receipt text or upload a file first!");
+      alert("Please enter financial telemetry or load a preset first!");
       return;
     }
 
     btnAnalyze.disabled = true;
-    btnAnalyze.innerHTML = '<span class="btn-icon">⏳</span> Processing...';
+    btnAnalyze.innerHTML = '<span class="btn-icon">⚡</span> COMPUTING TENSORS...';
+    if (textareaWrapper) textareaWrapper.classList.add('scanning');
+    if (hudStatus) hudStatus.textContent = "// NEURAL PARSER ACTIVE";
+    playSciFiSound('scan');
 
     try {
-      const nextId = `REC-${String(receipts.length + 1).padStart(3, '0')}`;
+      const nextId = `QC-${String(receipts.length + 1).padStart(3, '0')}`;
       const res = await fetch('/api/parse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,35 +177,43 @@ document.addEventListener('DOMContentLoaded', () => {
         receipts.push(data.receipt);
         renderTable();
         updateMetrics();
+        playSciFiSound('beep');
       } else {
-        alert(data.error || "Failed to parse receipt");
+        alert(data.error || "Neural parsing failed");
       }
     } catch (err) {
       console.error(err);
       alert("Error contacting local Gemma inference engine.");
     } finally {
       btnAnalyze.disabled = false;
-      btnAnalyze.innerHTML = '<span class="btn-icon">⚡</span> Analyze with Local Gemma';
+      btnAnalyze.innerHTML = '<span class="btn-icon">⚡</span> Execute Neural Scan';
+      if (textareaWrapper) textareaWrapper.classList.remove('scanning');
+      if (hudStatus) hudStatus.textContent = "// QUANTUM MATRIX STABLE";
     }
   });
 
   // 4. Clear & Toggle
   btnClear.addEventListener('click', () => {
+    playSciFiSound('beep');
     receiptInput.value = '';
     receipts = [];
     sampleSelect.value = '';
     renderTable();
     updateMetrics();
+    if (hudStatus) hudStatus.textContent = "// BUFFER PURGED";
   });
 
-  toggleRedact.addEventListener('change', () => renderTable());
+  toggleRedact.addEventListener('change', () => {
+    playSciFiSound('shield');
+    renderTable();
+  });
 
   // 5. Render receipts table
   function renderTable() {
     if (receipts.length === 0) {
       tableBody.innerHTML = `
         <tr class="empty-row">
-          <td colspan="9">No receipts processed yet. Select a sample above or paste receipt text to get started!</td>
+          <td colspan="9">// TELEMETRY LOG EMPTY. INGEST RECEIPT BUFFER OR SELECT QUANTUM PRESET TO COMMENCE.</td>
         </tr>`;
       return;
     }
@@ -153,8 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const merchant = isRedacted ? (r.redacted_merchant || r.merchant) : r.merchant;
       const notes = isRedacted ? (r.redacted_notes || r.audit_notes) : r.audit_notes;
       const privacyBadge = r.client_confidential 
-        ? `<span class="badge badge-shielded">🔒 Shielded</span>` 
-        : `<span class="badge badge-public">Public</span>`;
+        ? `<span class="badge badge-shielded">🔒 SHIELDED</span>` 
+        : `<span class="badge badge-public">PUBLIC</span>`;
 
       return `
         <tr>
@@ -166,14 +237,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <td class="cell-deductible">$${r.deductible_amount.toFixed(2)} (${Math.round(r.deductible_percentage * 100)}%)</td>
           <td>${privacyBadge}</td>
           <td class="cell-notes">${escapeHtml(notes)}</td>
-          <td><button class="btn-delete" data-index="${idx}" title="Remove entry">✕</button></td>
+          <td><button class="btn-delete" data-index="${idx}" title="Purge Record">✕</button></td>
         </tr>
       `;
     }).join('');
 
-    // Attach row delete handlers
     document.querySelectorAll('.btn-delete').forEach(btn => {
       btn.addEventListener('click', (e) => {
+        playSciFiSound('beep');
         const idx = parseInt(e.target.dataset.index, 10);
         receipts.splice(idx, 1);
         renderTable();
@@ -194,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
     metricTaxSavings.textContent = `$${taxSavings.toFixed(2)}`;
     metricShielded.textContent = shieldedCount;
 
-    // Render category pills
     if (receipts.length > 0) {
       const breakdown = {};
       receipts.forEach(r => {
@@ -202,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       categoryPills.style.display = 'flex';
       categoryPills.innerHTML = Object.entries(breakdown).map(([cat, amt]) => `
-        <span class="category-pill">${escapeHtml(cat)}: <strong>$${amt.toFixed(2)}</strong></span>
+        <span class="category-pill">// ${escapeHtml(cat).toUpperCase()}: <strong>$${amt.toFixed(2)}</strong></span>
       `).join('');
     } else {
       categoryPills.style.display = 'none';
@@ -213,9 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. Export handlers
   function triggerExport(format, filename) {
     if (receipts.length === 0) {
-      alert("No receipts to export! Analyze at least one receipt first.");
+      alert("No receipts to export! Ingest telemetry first.");
       return;
     }
+    playSciFiSound('beep');
 
     fetch('/api/export', {
       method: 'POST',
@@ -237,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
       a.remove();
       window.URL.revokeObjectURL(url);
     })
-    .catch(err => console.error("Export error:", err));
+    .catch(err => console.error("Export anomaly:", err));
   }
 
   btnExportCSV.addEventListener('click', () => triggerExport('quickbooks', 'quickbooks_expenses.csv'));
@@ -245,12 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
   btnExportMarkdown.addEventListener('click', () => triggerExport('markdown', 'irs_audit_expense_report.md'));
   btnExportJSON.addEventListener('click', () => triggerExport('json', 'expenses_export.json'));
 
-  // 8. 1-Click Copy for CPA
   btnCopyCPA.addEventListener('click', () => {
     if (receipts.length === 0) {
-      alert("No receipts to copy! Analyze at least one receipt first.");
+      alert("No telemetry to copy! Ingest at least one receipt first.");
       return;
     }
+    playSciFiSound('shield');
     fetch('/api/export', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -260,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(text => {
       navigator.clipboard.writeText(text).then(() => {
         const orig = btnCopyCPA.textContent;
-        btnCopyCPA.textContent = "✓ Copied!";
+        btnCopyCPA.textContent = "✓ TELEMETRY COPIED";
         setTimeout(() => { btnCopyCPA.textContent = orig; }, 2000);
       });
     });

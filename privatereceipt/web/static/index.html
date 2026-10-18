@@ -14,16 +14,17 @@
     <!-- Header -->
     <header class="app-header">
       <div class="header-left">
-        <div class="logo-shield">🔒</div>
+        <div class="logo-shield">⚡</div>
         <div>
-          <h1>PrivateReceipt <span class="tag-gemma">Gemma 2 Open-Weight AI</span></h1>
-          <p class="subtitle">Zero-Leak Local Expense & IRS Deductibility Intelligence for Freelancers</p>
+          <h1>PrivateReceipt <span class="tag-gemma">Gemma 2 // 2100 Core</span></h1>
+          <p class="subtitle">AIR-GAPPED NEURAL EXPENSE INTELLIGENCE • QUANTUM PRIVACY SHIELD</p>
         </div>
       </div>
       <div class="header-right">
+        <button class="btn-audio" id="btnAudioToggle">🔊 SFX: ON</button>
         <div class="privacy-badge">
           <span class="pulse-dot"></span>
-          Air-Gapped Local Mode Active
+          AIR-GAPPED // 100% ON-DEVICE
         </div>
       </div>
     </header>
@@ -31,24 +32,24 @@
     <!-- Metrics Bar -->
     <section class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-label">Total Gross Spend</div>
+        <div class="metric-label">// TOTAL GROSS SPEND</div>
         <div class="metric-val" id="metricTotalSpend">$0.00</div>
-        <div class="metric-hint">Across all processed receipts</div>
+        <div class="metric-hint">Telemetric gross financial flow</div>
       </div>
       <div class="metric-card highlight-green">
-        <div class="metric-label">Tax Deductible Amount</div>
+        <div class="metric-label">// TAX DEDUCTIBLE MATRIX</div>
         <div class="metric-val" id="metricTaxDeductible">$0.00</div>
-        <div class="metric-hint">Calculated per IRS Schedule C rules</div>
+        <div class="metric-hint">IRS Schedule C algorithmic shield</div>
       </div>
       <div class="metric-card highlight-blue">
-        <div class="metric-label">Est. Tax Savings (25% Bracket)</div>
+        <div class="metric-label">// ESTIMATED TAX DEFLECTION (25%)</div>
         <div class="metric-val" id="metricTaxSavings">$0.00</div>
-        <div class="metric-hint">Money back in your pocket</div>
+        <div class="metric-hint">Liquid capital preserved</div>
       </div>
       <div class="metric-card highlight-amber">
-        <div class="metric-label">NDA & Client Items Shielded</div>
+        <div class="metric-label">// QUANTUM NDA ENTITIES SHIELDED</div>
         <div class="metric-val" id="metricShielded">0</div>
-        <div class="metric-hint">Protected from accountant/public leak</div>
+        <div class="metric-hint">Zero bytes leaked to external neural nets</div>
       </div>
     </section>
 
@@ -57,28 +58,30 @@
       <!-- Input Panel -->
       <section class="panel input-panel">
         <div class="panel-header">
-          <h2>📥 Add Receipt or Invoice</h2>
+          <h2>📥 Neural Ingestion Matrix</h2>
           <div class="sample-loader">
-            <label for="sampleSelect">Load Sample:</label>
+            <label for="sampleSelect">// PRESET TELEMETRY:</label>
             <select id="sampleSelect">
-              <option value="">-- Choose a bundled sample --</option>
+              <option value="">-- Select Quantum Preset --</option>
             </select>
           </div>
         </div>
 
-        <div class="textarea-wrapper">
-          <textarea id="receiptInput" placeholder="Paste raw receipt text, invoice OCR dump, email confirmation, or drag & drop a receipt file here..."></textarea>
+        <div class="textarea-wrapper" id="textareaWrapper">
+          <div class="scan-laser"></div>
+          <textarea id="receiptInput" placeholder="// INGESTION BUFFER: Drop invoice file, receipt image (OCR), or paste raw financial telemetry..."></textarea>
         </div>
 
         <div class="input-actions">
           <button class="btn btn-primary" id="btnAnalyze">
-            <span class="btn-icon">⚡</span> Analyze with Local Gemma
+            <span class="btn-icon">⚡</span> Execute Neural Scan
           </button>
           <input type="file" id="fileInput" accept="image/*,.txt,.pdf,.csv,.json,.log,.eml,*/*" style="display:none">
           <button class="btn btn-secondary" id="btnUpload">
             <span class="btn-icon">📂</span> Upload File
           </button>
-          <button class="btn btn-secondary" id="btnClear">Clear</button>
+          <button class="btn btn-secondary" id="btnClear">Purge Buffer</button>
+          <span id="hudStatus"></span>
         </div>
       </section>
 
