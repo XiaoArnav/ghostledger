@@ -100,7 +100,7 @@ flowchart TD
 
 ### 1. Clone & Setup
 ```bash
-git clone https://github.com/your-username/private-receipt.git
+git clone https://github.com/XiaoArnav/private-receipt.git
 cd private-receipt
 ```
 
