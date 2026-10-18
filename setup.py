@@ -9,6 +9,7 @@ setup(
     python_requires=">=3.9",
     entry_points={
         "console_scripts": [
+            "ghostledger=privatereceipt.cli:main",
             "privatereceipt=privatereceipt.cli:main",
         ],
     },
