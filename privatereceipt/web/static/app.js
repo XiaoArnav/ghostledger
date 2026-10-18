@@ -11,35 +11,86 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioEnabled || !audioCtx) return;
     try {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
       const now = audioCtx.currentTime;
 
-      if (type === 'scan') {
+      if (type === 'beep') {
+        // Subtle cybernetic haptic click (damped 35ms bandpass impulse)
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2200, now);
+        filter.Q.setValueAtTime(3.5, now);
+
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(320, now);
-        osc.frequency.exponentialRampToValueAtTime(1440, now + 0.4);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+        osc.frequency.setValueAtTime(1600, now);
+        osc.frequency.exponentialRampToValueAtTime(300, now + 0.035);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
         osc.start(now);
-        osc.stop(now + 0.4);
+        osc.stop(now + 0.04);
+      } else if (type === 'scan') {
+        // Deep sub-bass pulse + low-pass resonant data sweep
+        const osc = audioCtx.createOscillator();
+        const sub = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(180, now);
+        filter.frequency.exponentialRampToValueAtTime(900, now + 0.22);
+        filter.frequency.exponentialRampToValueAtTime(80, now + 0.45);
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(75, now);
+        osc.frequency.linearRampToValueAtTime(140, now + 0.22);
+
+        sub.type = 'sine';
+        sub.frequency.setValueAtTime(48, now);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.linearRampToValueAtTime(0.09, now + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        sub.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        sub.start(now);
+        osc.stop(now + 0.45);
+        sub.stop(now + 0.45);
       } else if (type === 'shield') {
+        // Cybernetic air-tight mechanical lock / shutter thump
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(500, now);
+        filter.Q.setValueAtTime(2.5, now);
+
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.exponentialRampToValueAtTime(330, now + 0.25);
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.exponentialRampToValueAtTime(55, now + 0.16);
+
         gain.gain.setValueAtTime(0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
         osc.start(now);
-        osc.stop(now + 0.25);
-      } else if (type === 'beep') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(987.77, now);
-        gain.gain.setValueAtTime(0.05, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-        osc.start(now);
-        osc.stop(now + 0.12);
+        osc.stop(now + 0.18);
       }
     } catch (e) {
       console.warn("Audio effect error:", e);
