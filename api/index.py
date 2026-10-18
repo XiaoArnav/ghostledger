@@ -6,7 +6,6 @@ import json
 import urllib.parse
 from http.server import BaseHTTPRequestHandler
 
-# Ensure repository root is on sys.path
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
@@ -22,9 +21,16 @@ SAMPLES_DIR = os.path.join(REPO_ROOT, "samples")
 class handler(BaseHTTPRequestHandler):
     """Vercel Python serverless request handler."""
 
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
     def do_GET(self):
-        url = urllib.parse.urlparse(self.path)
-        if url.path.rstrip("/") in ["/api/samples", "/samples"]:
+        path_lower = self.path.lower()
+        if "samples" in path_lower:
             samples = {}
             if os.path.exists(SAMPLES_DIR):
                 for fname in sorted(os.listdir(SAMPLES_DIR)):
@@ -33,10 +39,9 @@ class handler(BaseHTTPRequestHandler):
                             samples[fname] = f.read()
             self._send_json({"samples": samples})
         else:
-            self.send_error(404, "Not Found")
+            self._send_json({"status": "GhostLedger API online", "path": self.path})
 
     def do_POST(self):
-        url = urllib.parse.urlparse(self.path)
         content_len = int(self.headers.get("Content-Length", 0))
         post_body = self.rfile.read(content_len).decode("utf-8")
 
@@ -46,8 +51,8 @@ class handler(BaseHTTPRequestHandler):
             self._send_json({"error": "Invalid JSON"}, status=400)
             return
 
-        route = url.path.rstrip("/")
-        if route in ["/api/parse", "/parse"]:
+        path_lower = self.path.lower()
+        if "parse" in path_lower:
             raw_text = payload.get("text", "")
             item_id = payload.get("id", "REC-001")
             if not raw_text.strip():
@@ -57,7 +62,7 @@ class handler(BaseHTTPRequestHandler):
             receipt_item = engine.parse_receipt(raw_text, receipt_id=item_id)
             self._send_json({"receipt": receipt_item.to_dict()})
 
-        elif route in ["/api/export", "/export"]:
+        elif "export" in path_lower:
             raw_receipts = payload.get("receipts", [])
             fmt = payload.get("format", "csv")
             redact = payload.get("redact", True)
@@ -111,16 +116,18 @@ class handler(BaseHTTPRequestHandler):
             encoded = content.encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", f"{mime}; charset=utf-8")
+            self.send_header("Access-Control-Allow-Origin", "*")
             self.send_header("Content-Length", str(len(encoded)))
             self.end_headers()
             self.wfile.write(encoded)
         else:
-            self.send_error(404, "Unknown API route")
+            self._send_json({"error": "Unknown API route", "path": self.path}, status=404)
 
     def _send_json(self, data: dict, status: int = 200):
         encoded = json.dumps(data).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Content-Length", str(len(encoded)))
         self.end_headers()
         self.wfile.write(encoded)
