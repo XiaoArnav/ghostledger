@@ -1158,47 +1158,6 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
     });
   }
 
-  // ==========================================
-  // 17. POSIX Terminal Holodeck
-  // ==========================================
-  const termBtns = document.querySelectorAll('.term-btn');
-  const termOutput = document.getElementById('termOutput');
-
-  const termCommands = {
-    'json-pipe': `<span class="prompt">$ </span>cat invoice.txt | ghostledger -q -f json | jq .
-{
-  "merchant": "DigitalOcean Holdings, Inc.",
-  "total_amount": 90.50,
-  "category": "Software & Subscriptions",
-  "deductible_percentage": 1.0,
-  "deductible_amount": 90.50,
-  "irs_audit_notes": "IRS Schedule C Line 18: 100% deductible cloud hosting and software services."
-}`,
-    'awk-tsv': `<span class="prompt">$ </span>ghostledger samples/ -f tsv | awk -F'\\t' '$4 ~ /Meals/'
-REC-002	2026-10-12	The Blue Fin Bistro	Meals & Entertainment	$148.20	50%	$74.10	Line 24b 50% limit`,
-    'redact-csv': `<span class="prompt">$ </span>cat client_dinner.txt | ghostledger -q -r -f csv
-ID,Date,Merchant,Category,Total,Deductible,Confidential,Audit_Notes
-REC-001,2026-10-12,The Blue Fin Bistro,Meals,148.20,74.10,YES,"Line 24b: Project [CONFIDENTIAL_CLIENT_1]"`,
-    'demo-audit': `<span class="prompt">$ </span>ghostledger demo
-[AIR-GAPPED AUDIT COMPLETE]
-Processed: 4 receipts across Software, Meals, Travel, Equipment
-Total Spend: $2,520.59
-Tax Deductible: $2,446.49 (97.1% efficiency)
-Client NDA Secrets Shielded: 1
-Marginal Token Cost: $0.00 (Local Gemma 2)`
-  };
-
-  termBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      playCyberSound('click');
-      termBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cmdKey = btn.getAttribute('data-cmd');
-      if (termOutput && termCommands[cmdKey]) {
-        termOutput.innerHTML = termCommands[cmdKey];
-      }
-    });
-  });
 
   function escapeHtml(text) {
     if (!text) return '';
