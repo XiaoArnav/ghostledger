@@ -43,9 +43,9 @@
       </p>
     </div>
 
-    <!-- 3-Step "How It Works" Visual Onboarding Bar -->
+    <!-- 3-Step "How It Works" Visual Onboarding Bar (3D Interactive) -->
     <div class="steps-guide">
-      <div class="step-card">
+      <div class="step-card active-step" data-step="1" title="Click to interact with Step 1: Ingest Receipts">
         <div class="step-header">
           <span class="step-num">STEP 01</span>
           <span class="step-icon">📥</span>
@@ -53,7 +53,7 @@
         <div class="step-title">Ingest Receipt or Invoice</div>
         <div class="step-desc">Click any 1-click preset scenario, paste raw invoice text, or drop an image for in-browser private OCR.</div>
       </div>
-      <div class="step-card">
+      <div class="step-card" data-step="2" title="Click to execute Step 2: Local Gemma AI Analysis">
         <div class="step-header">
           <span class="step-num cyan">STEP 02</span>
           <span class="step-icon">⚡</span>
@@ -61,7 +61,7 @@
         <div class="step-title">Local Gemma AI Analysis</div>
         <div class="step-desc">Zero packets leave your laptop. Auto-applies IRS Schedule C rules (50% meals vs 100% software) and masks client NDA names.</div>
       </div>
-      <div class="step-card">
+      <div class="step-card" data-step="3" title="Click to view Step 3: Audit Defense & CPA Export">
         <div class="step-header">
           <span class="step-num purple">STEP 03</span>
           <span class="step-icon">📊</span>
@@ -71,9 +71,9 @@
       </div>
     </div>
 
-    <!-- Live Telemetry Grid (Matching Landing Page Style) -->
+    <!-- Live Telemetry Grid (Matching Landing Page Style, 3D Interactive) -->
     <div class="hud-stats-grid">
-      <div class="hud-stat-box">
+      <div class="hud-stat-box" data-stat="spend" title="Click to view all expenses in ledger">
         <div class="stat-top-row">
           <div class="stat-label">// TOTAL GROSS SPEND</div>
           <span class="stat-badge cyan" id="metricCount">0 RECEIPTS</span>
@@ -82,7 +82,7 @@
         <div class="stat-desc">Total across all processed expenses</div>
       </div>
 
-      <div class="hud-stat-box">
+      <div class="hud-stat-box" data-stat="deductible" title="Click to inspect IRS Schedule C tax efficiency">
         <div class="stat-top-row">
           <div class="stat-label">// IRS TAX DEDUCTIBLE</div>
           <span class="stat-badge emerald" id="metricEfficiency">0.0% CAPTURED</span>
@@ -91,22 +91,22 @@
         <div class="stat-desc">Calculated via IRS Schedule C deduction rules</div>
       </div>
 
-      <div class="hud-stat-box">
+      <div class="hud-stat-box" data-stat="savings" title="Click to toggle tax bracket & savings">
         <div class="stat-top-row">
           <div class="stat-label">// ESTIMATED CASH TAX SAVINGS</div>
           <div class="bracket-toggles" id="taxBracketToggles">
-            <button class="bracket-btn" data-rate="0.15">15%</button>
-            <button class="bracket-btn" data-rate="0.22">22%</button>
-            <button class="bracket-btn active" data-rate="0.25">25%</button>
-            <button class="bracket-btn" data-rate="0.32">32%</button>
-            <button class="bracket-btn" data-rate="0.37">37%</button>
+            <button class="bracket-btn" data-rate="0.15" title="15% Tax Bracket">15%</button>
+            <button class="bracket-btn" data-rate="0.22" title="22% Tax Bracket">22%</button>
+            <button class="bracket-btn active" data-rate="0.25" title="25% Tax Bracket">25%</button>
+            <button class="bracket-btn" data-rate="0.32" title="32% Tax Bracket">32%</button>
+            <button class="bracket-btn" data-rate="0.37" title="37% Tax Bracket">37%</button>
           </div>
         </div>
         <div class="stat-number amber" id="metricTaxSavings">$0.00</div>
         <div class="stat-desc" id="bracketDesc">Direct federal & self-employment tax reduction (at 25% bracket)</div>
       </div>
 
-      <div class="hud-stat-box">
+      <div class="hud-stat-box" data-stat="shielded" title="Click to toggle Client NDA Privacy Shield">
         <div class="stat-top-row">
           <div class="stat-label">// NDA SECRETS SHIELDED</div>
           <span class="stat-badge purple" id="metricShieldStatus">ZERO LEAKS</span>
@@ -125,23 +125,23 @@
           <div class="header-flex-row">
             <h2>📥 Add Expense</h2>
             <button class="btn-batch-load" id="btnLoadAll">
-              ⚡ LOAD ALL 4 PRESETS (FULL AUDIT)
+              ⚡ LOAD ALL 9 SCENARIOS (FULL AUDIT)
             </button>
           </div>
         </div>
 
-        <!-- Ingestion Tabs: Presets, Text, File/OCR -->
+        <!-- Ingestion Tabs: Presets, Text, File/OCR (3D Floating Dock) -->
         <div class="ingestion-tabs">
-          <button class="tab-btn active" data-tab="presets">⚡ 1-Click Scenarios</button>
+          <button class="tab-btn active" data-tab="presets">⚡ 1-Click Scenarios (9)</button>
           <button class="tab-btn" data-tab="text">📝 Raw Text / Invoice</button>
           <button class="tab-btn" data-tab="upload">📷 Drop / OCR Image</button>
         </div>
 
-        <!-- Tab 1 Content: Rich Interactive Scenario Cards -->
+        <!-- Tab 1 Content: Rich Interactive Scenario Cards (9 Realistic Freelance Scenarios) -->
         <div class="tab-content" id="tabPresets">
           <p class="tab-helper-text">Select any real-world freelance scenario to load its authentic receipt and test local IRS deduction extraction:</p>
           <div class="scenario-cards-grid">
-            <div class="scenario-card" data-sample="saas_subscription.txt">
+            <div class="scenario-card" data-sample="saas_subscription.txt" title="Click or drag in 3D">
               <div class="sc-top">
                 <span class="sc-icon">💻</span>
                 <span class="sc-rule-pill green">Schedule C Line 18 • 100%</span>
@@ -154,7 +154,7 @@
               </div>
             </div>
 
-            <div class="scenario-card" data-sample="client_dinner_nda.txt">
+            <div class="scenario-card" data-sample="client_dinner_nda.txt" title="Click or drag in 3D">
               <div class="sc-top">
                 <span class="sc-icon">🍽️</span>
                 <span class="sc-rule-pill amber">Line 24b • 50% Cap • NDA</span>
@@ -167,9 +167,11 @@
               </div>
             </div>
 
-            <div class="scenario-card" data-sample="flight_conference.txt">
-              <div class="sc-icon">✈️</div>
-              <div class="sc-rule-pill green">Schedule C Line 24a • 100%</div>
+            <div class="scenario-card" data-sample="flight_conference.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">✈️</span>
+                <span class="sc-rule-pill green">Schedule C Line 24a • 100%</span>
+              </div>
               <div class="sc-title">AI Summit Travel Flight</div>
               <div class="sc-sub">Delta Air Lines (SEA ➔ SFO) · $433.00</div>
               <div class="sc-action-row">
@@ -178,13 +180,80 @@
               </div>
             </div>
 
-            <div class="scenario-card" data-sample="hardware_depreciation.txt">
-              <div class="sc-icon">🖥️</div>
-              <div class="sc-rule-pill purple">Section 179 • 100% Expensing</div>
+            <div class="scenario-card" data-sample="hardware_depreciation.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">🖥️</span>
+                <span class="sc-rule-pill purple">Section 179 • 100% Expensing</span>
+              </div>
               <div class="sc-title">Apple Studio Display Rig</div>
               <div class="sc-sub">Apple Store University Village · $1,848.89</div>
               <div class="sc-action-row">
                 <span class="sc-hint">First-Year De Minimis Safe Harbor</span>
+                <button class="btn-sc-select">Load Receipt ➔</button>
+              </div>
+            </div>
+
+            <div class="scenario-card" data-sample="coworking_wework.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">🏢</span>
+                <span class="sc-rule-pill green">Schedule C Line 20b • 100%</span>
+              </div>
+              <div class="sc-title">WeWork Dedicated Desk</div>
+              <div class="sc-sub">1201 3rd Ave Suite 2200 · $299.00</div>
+              <div class="sc-action-row">
+                <span class="sc-hint">Rent of Business Space</span>
+                <button class="btn-sc-select">Load Receipt ➔</button>
+              </div>
+            </div>
+
+            <div class="scenario-card" data-sample="home_office_internet.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">🌐</span>
+                <span class="sc-rule-pill green">Schedule C Line 25 • 100%</span>
+              </div>
+              <div class="sc-title">Gigabit Fiber Internet</div>
+              <div class="sc-sub">CenturyLink Enterprise · $147.50</div>
+              <div class="sc-action-row">
+                <span class="sc-hint">Utilities & Remote APIs</span>
+                <button class="btn-sc-select">Load Receipt ➔</button>
+              </div>
+            </div>
+
+            <div class="scenario-card" data-sample="rideshare_client_trip.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">🚗</span>
+                <span class="sc-rule-pill green">Schedule C Line 24a • 100%</span>
+              </div>
+              <div class="sc-title">Client On-Site Rideshare</div>
+              <div class="sc-sub">Uber Comfort (Seattle ➔ Bellevue) · $42.50</div>
+              <div class="sc-action-row">
+                <span class="sc-hint">Local Client Transport</span>
+                <button class="btn-sc-select">Load Receipt ➔</button>
+              </div>
+            </div>
+
+            <div class="scenario-card" data-sample="book_ai_training.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">📚</span>
+                <span class="sc-rule-pill green">Schedule C Line 27a • 100%</span>
+              </div>
+              <div class="sc-title">LLM Agents Book & Masterclass</div>
+              <div class="sc-sub">O'Reilly Media Technical · $79.99</div>
+              <div class="sc-action-row">
+                <span class="sc-hint">Professional Education</span>
+                <button class="btn-sc-select">Load Receipt ➔</button>
+              </div>
+            </div>
+
+            <div class="scenario-card" data-sample="security_audit_contractor.txt" title="Click or drag in 3D">
+              <div class="sc-top">
+                <span class="sc-icon">🛡️</span>
+                <span class="sc-rule-pill amber">Line 11 • 100% • NDA</span>
+              </div>
+              <div class="sc-title">Pen-Test Security Contractor</div>
+              <div class="sc-sub">Apex CyberSec Advisory · $650.00</div>
+              <div class="sc-action-row">
+                <span class="sc-hint">Contract Labor under NDA</span>
                 <button class="btn-sc-select">Load Receipt ➔</button>
               </div>
             </div>

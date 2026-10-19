@@ -1,0 +1,18 @@
+WeWork Management LLC
+1201 3rd Ave, Suite 2200, Seattle, WA
+INVOICE #WW-202610-891
+Date: 2026-10-01
+Member: Autonomous Freelance Labs LLC
+
+Description                                   Amount
+------------------------------------------------------
+All Access Monthly Dedicated Desk Membership  $299.00
+High-Speed Fiber & Conference Room Credits      $0.00
+------------------------------------------------------
+Subtotal:                                     $299.00
+Tax:                                            $0.00
+TOTAL AMOUNT CHARGED:                         $299.00
+
+Paid via Visa ending in 5519.
+Business Purpose: Dedicated workspace & meeting rooms for client design sprint.
+Eligible for IRS Schedule C Line 20b (Rent or Lease of Business Property).

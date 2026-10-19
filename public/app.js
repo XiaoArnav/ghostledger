@@ -141,10 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 2. Hyperspace 3D Warp Field Engine (Shared with Landing Page)
+  // 2. Hyperspace 3D Warp Field Engine & Holographic Spark Emitter
   // ==========================================
   const canvas = document.getElementById('warpCanvas');
   let triggerWarpSurge = () => {};
+  let emit3DSparks = () => {};
 
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -158,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const NUM_STARS = 450;
     const stars = [];
+    const sparks = [];
     let speed = 4;
     let targetSpeed = 4;
     let mouseX = width / 2;
@@ -183,6 +185,25 @@ document.addEventListener('DOMContentLoaded', () => {
       targetSpeed = 22;
       playCyberSound('warp');
       setTimeout(() => { targetSpeed = 4; }, 800);
+    };
+
+    emit3DSparks = (clientX, clientY, count = 26, baseColor = '#00f0ff') => {
+      const colors = [baseColor, '#00ff88', '#a855f7', '#ffb703', '#ffffff'];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = 2 + Math.random() * 7;
+        sparks.push({
+          x: clientX,
+          y: clientY,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          size: 1.5 + Math.random() * 2.5,
+          alpha: 1,
+          decay: 0.02 + Math.random() * 0.025,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+      triggerWarpSurge();
     };
 
     function renderWarp() {
@@ -224,6 +245,28 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.lineWidth = Math.max(0.5, (1 - star.z / width) * 2.2);
           ctx.stroke();
         }
+      }
+
+      // Render 3D Holographic Sparks
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const p = sparks[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.09; // subtle gravity
+        p.alpha -= p.decay;
+        if (p.alpha <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.restore();
       }
 
       requestAnimationFrame(renderWarp);
@@ -306,7 +349,96 @@ TOTAL PAID:                                   $1,848.89
 
 Card: Apple Card ending in 7719
 Business Purpose: Primary dedicated high-resolution monitor for client mobile app QA & UI design.
-Eligible for IRS Section 179 de minimis safe harbor deduction.`
+Eligible for IRS Section 179 de minimis safe harbor deduction.`,
+
+    'coworking_wework.txt': `WeWork Management LLC
+1201 3rd Ave, Suite 2200, Seattle, WA
+INVOICE #WW-202610-891
+Date: 2026-10-01
+Member: Autonomous Freelance Labs LLC
+
+Description                                   Amount
+------------------------------------------------------
+All Access Monthly Dedicated Desk Membership  $299.00
+High-Speed Fiber & Conference Room Credits      $0.00
+------------------------------------------------------
+Subtotal:                                     $299.00
+Tax:                                            $0.00
+TOTAL AMOUNT CHARGED:                         $299.00
+
+Paid via Visa ending in 5519.
+Business Purpose: Dedicated workspace & meeting rooms for client design sprint.
+Eligible for IRS Schedule C Line 20b (Rent or Lease of Business Property).`,
+
+    'home_office_internet.txt': `Lumen / CenturyLink Business
+1025 Enterprise Parkway, Denver, CO
+ACCOUNT #: 8941-2094-1
+Billing Date: 2026-10-05
+
+Description                                   Amount
+------------------------------------------------------
+Dedicated Gigabit Fiber Internet (1000 Mbps)  $120.00
+Static IP Address Allocation                   $15.00
+------------------------------------------------------
+Subtotal:                                     $135.00
+Taxes & Regulatory Fees:                       $12.50
+TOTAL AMOUNT DUE:                             $147.50
+
+Payment: Direct Debit from Business Checking ending 9012.
+Business Purpose: Dedicated primary high-speed fiber internet for freelance client staging APIs and video consulting.
+Eligible for IRS Schedule C Line 25 (Utilities).`,
+
+    'rideshare_client_trip.txt': `Uber Technologies, Inc.
+1455 Market St, San Francisco, CA
+TRIP RECEIPT: 2026-10-14 17:35
+
+Trip: Seattle Downtown Office -> Bellevue Tech Campus
+Passenger: Senior Engineer
+
+Uber Comfort Fare:                             $34.20
+Tolls & Surcharges:                             $3.30
+Tip:                                            $5.00
+TOTAL:                                         $42.50
+
+Paid via Apple Pay (Mastercard ending in 8112).
+Business Purpose: Urgent on-site emergency incident response trip to client Bellevue server room.
+Eligible for IRS Schedule C Line 24a (Travel and Transportation).`,
+
+    'book_ai_training.txt': `O'Reilly Media, Inc.
+1005 Gravenstein Hwy North, Sebastopol, CA
+ORDER #ORM-2026-449102
+Date: 2026-10-09
+
+Items:
+1x "Designing Autonomous LLM Agents in Production" (eBook)  $49.99
+1x Neural Architecture Search Masterclass (Interactive)    $30.00
+-----------------------------------------------------------------
+Subtotal:                                                  $79.99
+Tax:                                                        $0.00
+TOTAL PAID:                                                $79.99
+
+Card: Amex ending in 1004.
+Business Purpose: Continuing technical education and AI skill maintenance to maintain current software engineering consulting trade.
+Eligible for IRS Schedule C Line 27a (Professional Education and Research Materials).`,
+
+    'security_audit_contractor.txt': `Apex CyberSec Advisory LLC
+701 5th Ave, Seattle, WA
+INVOICE #APEX-2026-081
+Date: 2026-10-16
+Bill To: Private Receipt Engineering
+Client Matter: Project Apex Penetration Test (Strict NDA)
+
+Services Rendered:
+External API Penetration Test & Zero-Day Review (10 hrs)   $650.00
+-----------------------------------------------------------------
+Subtotal:                                                 $650.00
+Sales Tax:                                                  $0.00
+TOTAL INVOICE:                                            $650.00
+
+Payment: Wire transfer confirmation #WT98231.
+Auditor: Michael Vance, CISSP.
+Client Confidentiality Note: Client Acme Health Systems requested third-party security verification under NDA.
+Eligible for IRS Schedule C Line 11 (Contract Labor).`
   };
   sampleData = Object.assign({}, BUILTIN_SAMPLES);
 
@@ -463,7 +595,7 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
       category = "Software & Subscriptions";
       pct = 1.0;
       auditNote = "IRS Schedule C Line 18: 100% deductible cloud hosting and software services.";
-    } else if (lower.includes('flight') || lower.includes('delta') || lower.includes('air lines') || lower.includes('hotel') || lower.includes('travel')) {
+    } else if (lower.includes('flight') || lower.includes('delta') || lower.includes('air lines') || lower.includes('hotel')) {
       category = "Travel & Lodging";
       pct = 1.0;
       auditNote = "IRS Schedule C Line 24a: 100% deductible business travel costs.";
@@ -471,9 +603,29 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
       category = "Office Supplies & Equipment";
       pct = 1.0;
       auditNote = "IRS Section 179: 100% first-year de minimis safe harbor deduction for qualifying computer hardware.";
+    } else if (lower.includes('wework') || lower.includes('coworking') || lower.includes('dedicated desk')) {
+      category = "Rent & Space Leasing";
+      pct = 1.0;
+      auditNote = "IRS Schedule C Line 20b: 100% deductible rental expense for external office workspace and meeting facilities.";
+    } else if (lower.includes('lumen') || lower.includes('centurylink') || lower.includes('fiber') || lower.includes('gigabit')) {
+      category = "Utilities & Internet";
+      pct = 1.0;
+      auditNote = "IRS Schedule C Line 25: 100% deductible business utilities and high-speed dedicated client communications.";
+    } else if (lower.includes('uber') || lower.includes('rideshare') || lower.includes('lyft') || lower.includes('transit')) {
+      category = "Travel & Transportation";
+      pct = 1.0;
+      auditNote = "IRS Schedule C Line 24a: 100% deductible local business transit and client on-site emergency dispatch.";
+    } else if (lower.includes('o\'reilly') || lower.includes('oreilly') || lower.includes('book') || lower.includes('masterclass')) {
+      category = "Education & Research";
+      pct = 1.0;
+      auditNote = "IRS Schedule C Line 27a: 100% deductible continuing professional education and AI technical skill development.";
+    } else if (lower.includes('apex') || lower.includes('cybersec') || lower.includes('contractor') || lower.includes('pen-test')) {
+      category = "Contract Labor";
+      pct = 1.0;
+      auditNote = "IRS Schedule C Line 11: 100% deductible third-party contract labor paid for specialized technical security services.";
     }
 
-    const isConfidential = /nda|confidential|project apex|client:/i.test(rawText);
+    const isConfidential = /nda|confidential|project apex|client:|acme health|sarah jenkins/i.test(rawText);
     let redactedMerchant = merchant;
     let redactedNotes = auditNote;
     let redactedRaw = rawText;
@@ -482,7 +634,8 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
       redactedNotes += " [Privacy Protected: Sensitive client & NDA project markers sanitized]";
       redactedRaw = redactedRaw.replace(/Project Apex/gi, "Project [CONFIDENTIAL_CLIENT_1]")
                                .replace(/Client:\s*Acme Health Systems/gi, "Client: [CONFIDENTIAL_CLIENT_1]")
-                               .replace(/Sarah Jenkins/gi, "[REDACTED_CONTACT]");
+                               .replace(/Sarah Jenkins/gi, "[REDACTED_CONTACT]")
+                               .replace(/Michael Vance,\s*CISSP/gi, "[REDACTED_AUDITOR]");
     }
 
     return {
@@ -569,15 +722,25 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
   });
 
   // ==========================================
-  // 9. Master Action: Load All 4 Presets
+  // 9. Master Action: Load All 9 Presets
   // ==========================================
   btnLoadAll.addEventListener('click', async () => {
     playCyberSound('scan');
     btnLoadAll.disabled = true;
-    btnLoadAll.textContent = '⚡ RUNNING FULL BATCH AUDIT...';
+    btnLoadAll.textContent = '⚡ RUNNING FULL 9-SCENARIO BATCH AUDIT...';
 
     receipts = [];
-    const keys = ['saas_subscription.txt', 'client_dinner_nda.txt', 'flight_conference.txt', 'hardware_depreciation.txt'];
+    const keys = [
+      'saas_subscription.txt',
+      'client_dinner_nda.txt',
+      'flight_conference.txt',
+      'hardware_depreciation.txt',
+      'coworking_wework.txt',
+      'home_office_internet.txt',
+      'rideshare_client_trip.txt',
+      'book_ai_training.txt',
+      'security_audit_contractor.txt'
+    ];
 
     for (const key of keys) {
       const text = sampleData[key] || BUILTIN_SAMPLES[key];
@@ -597,9 +760,9 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
     }
 
     btnLoadAll.disabled = false;
-    btnLoadAll.textContent = '⚡ LOAD ALL 4 PRESETS (FULL AUDIT)';
-    if (hudStatus) hudStatus.textContent = `BATCH COMPLETE // 4 RECEIPTS PARSED`;
-    showToast(`✓ All 4 freelance scenarios loaded & audited!`);
+    btnLoadAll.textContent = '⚡ LOAD ALL 9 SCENARIOS (FULL AUDIT)';
+    if (hudStatus) hudStatus.textContent = `BATCH COMPLETE // 9 SCENARIOS PARSED`;
+    showToast(`✓ All 9 freelance scenarios loaded & audited!`);
   });
 
   // Clear Buffer
@@ -1165,4 +1328,385 @@ Eligible for IRS Section 179 de minimis safe harbor deduction.`
     div.textContent = text;
     return div.innerHTML;
   }
+
+  // ==========================================
+  // 14. Master 3D Interaction, Gyroscopic Tilt & Free-Rotation Physics Controller
+  // ==========================================
+  function init3DInteractables() {
+    const trackedItems = [];
+
+    function register3D(el, options = {}) {
+      if (!el || el._is3DRegistered) return;
+      el._is3DRegistered = true;
+
+      const state = {
+        el,
+        type: options.type || 'card',
+        color: options.color || '#00f0ff',
+        maxTilt: options.maxTilt || (options.type === 'tab' || options.type === 'bracket' ? 12 : 20),
+        maxZ: options.maxZ || (options.type === 'tab' || options.type === 'bracket' ? 12 : 22),
+        pressZ: options.pressZ || -10,
+        perspective: options.perspective || 1100,
+        // Current values (lerped)
+        rotX: 0,
+        rotY: 0,
+        transZ: 0,
+        scale: 1,
+        glareX: 0.5,
+        glareY: 0.5,
+        glareOpacity: 0,
+        rimOpacity: 0,
+        // Target values
+        targetRotX: 0,
+        targetRotY: 0,
+        targetTransZ: 0,
+        targetScale: 1,
+        targetGlareOpacity: 0,
+        targetRimOpacity: 0,
+        // Drag state
+        isHovered: false,
+        isPressed: false,
+        isDragging: false,
+        dragStartX: 0,
+        dragStartY: 0,
+        lastDragX: 0,
+        lastDragY: 0,
+        dragVelX: 0,
+        dragVelY: 0,
+        hasDragMoved: false,
+        recoilTimer: null
+      };
+
+      el.style.transformStyle = 'preserve-3d';
+
+      // Mouse Hover / Move
+      el.addEventListener('mouseenter', () => {
+        state.isHovered = true;
+        state.targetGlareOpacity = 0.9;
+        state.targetRimOpacity = 0.85;
+      });
+
+      el.addEventListener('mousemove', (e) => {
+        state.isHovered = true;
+        const rect = el.getBoundingClientRect();
+        const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const relY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+
+        state.glareX = relX;
+        state.glareY = relY;
+
+        if (!state.isDragging) {
+          const normX = (relX - 0.5) * 2; // -1 to +1
+          const normY = (relY - 0.5) * 2; // -1 to +1
+          state.targetRotX = -normY * state.maxTilt;
+          state.targetRotY = normX * state.maxTilt;
+          state.targetTransZ = state.maxZ;
+          state.targetScale = 1.03;
+          state.targetGlareOpacity = 0.85;
+          state.targetRimOpacity = 0.8;
+        }
+      });
+
+      el.addEventListener('mouseleave', () => {
+        state.isHovered = false;
+        if (!state.isDragging) {
+          state.targetRotX = 0;
+          state.targetRotY = 0;
+          state.targetTransZ = 0;
+          state.targetScale = 1;
+          state.targetGlareOpacity = 0;
+          state.targetRimOpacity = 0;
+        }
+      });
+
+      // Mouse Down / Drag Start
+      el.addEventListener('mousedown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' ||
+           (e.target.tagName === 'BUTTON' && e.target !== el && !e.target.classList.contains('btn-sc-select'))) {
+          return;
+        }
+        state.isPressed = true;
+        state.isDragging = true;
+        state.hasDragMoved = false;
+        state.dragStartX = e.clientX;
+        state.dragStartY = e.clientY;
+        state.lastDragX = e.clientX;
+        state.lastDragY = e.clientY;
+        state.dragVelX = 0;
+        state.dragVelY = 0;
+        state.targetTransZ = state.pressZ;
+        state.targetScale = 0.97;
+      });
+
+      // Touch events for mobile/tablet 3D interaction
+      el.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        const t = e.touches[0];
+        state.isPressed = true;
+        state.isDragging = true;
+        state.hasDragMoved = false;
+        state.dragStartX = t.clientX;
+        state.dragStartY = t.clientY;
+        state.lastDragX = t.clientX;
+        state.lastDragY = t.clientY;
+        state.dragVelX = 0;
+        state.dragVelY = 0;
+        state.targetTransZ = state.pressZ;
+        state.targetScale = 0.97;
+      }, { passive: true });
+
+      trackedItems.push(state);
+    }
+
+    // Collect elements
+    const stepCards = document.querySelectorAll('.step-card');
+    const hudBoxes = document.querySelectorAll('.hud-stat-box');
+    const scenarioCards = document.querySelectorAll('.scenario-card');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const bracketBtns = document.querySelectorAll('.bracket-btn');
+    const inspTabBtns = document.querySelectorAll('.insp-tab-btn');
+    const exportTiles = document.querySelectorAll('.btn-export-tile');
+    const scheduleRows = document.querySelectorAll('.schedule-row.clickable');
+    const actionPrimary = document.querySelectorAll('.btn-action.primary, .btn-batch-load');
+
+    stepCards.forEach((card, idx) => {
+      const colors = ['#00ff88', '#00f0ff', '#a855f7'];
+      register3D(card, { type: 'step', color: colors[idx % 3], maxTilt: 22, maxZ: 26 });
+    });
+
+    hudBoxes.forEach(box => {
+      const stat = box.getAttribute('data-stat');
+      const colors = { spend: '#00f0ff', deductible: '#00ff88', savings: '#ffb703', shielded: '#a855f7' };
+      register3D(box, { type: 'hud', color: colors[stat] || '#00f0ff', maxTilt: 20, maxZ: 24 });
+    });
+
+    scenarioCards.forEach(sc => {
+      register3D(sc, { type: 'scenario', color: '#00f0ff', maxTilt: 18, maxZ: 20 });
+    });
+
+    tabBtns.forEach(tb => {
+      register3D(tb, { type: 'tab', color: '#00f0ff', maxTilt: 14, maxZ: 14, pressZ: -6 });
+    });
+
+    bracketBtns.forEach(bb => {
+      register3D(bb, { type: 'bracket', color: '#ffb703', maxTilt: 12, maxZ: 10, pressZ: -4 });
+    });
+
+    inspTabBtns.forEach(itb => {
+      register3D(itb, { type: 'tab', color: '#00f0ff', maxTilt: 12, maxZ: 12, pressZ: -5 });
+    });
+
+    exportTiles.forEach(et => {
+      register3D(et, { type: 'export', color: et.classList.contains('cpa-btn') ? '#a855f7' : '#00f0ff', maxTilt: 16, maxZ: 18, pressZ: -6 });
+    });
+
+    scheduleRows.forEach(sr => {
+      register3D(sr, { type: 'sched', color: '#00ff88', maxTilt: 14, maxZ: 14, pressZ: -5 });
+    });
+
+    actionPrimary.forEach(ap => {
+      register3D(ap, { type: 'button', color: '#00f0ff', maxTilt: 14, maxZ: 16, pressZ: -6 });
+    });
+
+    // Global Window Move for Drag & 3D Free-Rotation
+    window.addEventListener('mousemove', (e) => {
+      trackedItems.forEach(item => {
+        if (!item.isDragging) return;
+        const dx = e.clientX - item.lastDragX;
+        const dy = e.clientY - item.lastDragY;
+        const totalDist = Math.hypot(e.clientX - item.dragStartX, e.clientY - item.dragStartY);
+        if (totalDist > 6) {
+          item.hasDragMoved = true;
+        }
+
+        item.targetRotY += dx * 0.65;
+        item.targetRotX -= dy * 0.65;
+        item.dragVelX = dx * 0.55;
+        item.dragVelY = -dy * 0.55;
+        item.lastDragX = e.clientX;
+        item.lastDragY = e.clientY;
+        item.targetTransZ = item.maxZ + 14;
+        item.targetScale = 1.05;
+      });
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      trackedItems.forEach(item => {
+        if (!item.isDragging) return;
+        const dx = t.clientX - item.lastDragX;
+        const dy = t.clientY - item.lastDragY;
+        const totalDist = Math.hypot(t.clientX - item.dragStartX, t.clientY - item.dragStartY);
+        if (totalDist > 6) {
+          item.hasDragMoved = true;
+        }
+
+        item.targetRotY += dx * 0.65;
+        item.targetRotX -= dy * 0.65;
+        item.dragVelX = dx * 0.55;
+        item.dragVelY = -dy * 0.55;
+        item.lastDragX = t.clientX;
+        item.lastDragY = t.clientY;
+        item.targetTransZ = item.maxZ + 14;
+        item.targetScale = 1.05;
+      });
+    }, { passive: true });
+
+    // Global Window Release
+    function handleRelease() {
+      trackedItems.forEach(item => {
+        if (!item.isDragging) return;
+        item.isDragging = false;
+        item.isPressed = false;
+
+        item.targetTransZ = item.maxZ + 6; // spring recoil overshoot
+        item.targetScale = 1.02;
+        clearTimeout(item.recoilTimer);
+        item.recoilTimer = setTimeout(() => {
+          if (!item.isHovered) {
+            item.targetTransZ = 0;
+            item.targetScale = 1;
+          } else {
+            item.targetTransZ = item.maxZ;
+          }
+        }, 220);
+      });
+    }
+
+    window.addEventListener('mouseup', handleRelease);
+    window.addEventListener('touchend', handleRelease);
+
+    // Click Handlers with 3D Holographic Sparks
+    trackedItems.forEach(item => {
+      item.el.addEventListener('click', (e) => {
+        if (item.hasDragMoved) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        // Fire 3D Holographic Sparks directly on warpCanvas
+        emit3DSparks(e.clientX || (item.el.getBoundingClientRect().left + 40),
+                     e.clientY || (item.el.getBoundingClientRect().top + 20),
+                     32, item.color);
+
+        // Step Card Interactive Routing
+        if (item.type === 'step') {
+          const step = item.el.getAttribute('data-step');
+          stepCards.forEach(s => s.classList.remove('active-step'));
+          item.el.classList.add('active-step');
+
+          if (step === '1') {
+            const btnPresets = document.querySelector('.tab-btn[data-tab="presets"]');
+            if (btnPresets) btnPresets.click();
+            document.querySelector('.input-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast("Step 01: Ingestion // Select a scenario or drop invoice");
+          } else if (step === '2') {
+            const btnText = document.querySelector('.tab-btn[data-tab="text"]');
+            if (btnText) btnText.click();
+            receiptInput?.focus();
+            if (receiptInput && receiptInput.value.trim()) {
+              btnAnalyze?.click();
+            } else {
+              showToast("Step 02: Analysis // Ready for Local Gemma AI Inference");
+            }
+          } else if (step === '3') {
+            document.getElementById('resultsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast("Step 03: Audit & Export // Review IRS Schedule C & 1-Click Export");
+          }
+        }
+        // HUD Stats Interactive Feedback
+        else if (item.type === 'hud') {
+          const stat = item.el.getAttribute('data-stat');
+          if (stat === 'spend') {
+            if (tableSearch) {
+              tableSearch.value = '';
+              tableSearch.dispatchEvent(new Event('input'));
+            }
+            document.getElementById('resultsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast("Ledger // Showing All Ingested Receipts");
+          } else if (stat === 'deductible') {
+            if (tableSearch) tableSearch.value = '';
+            const rows = document.querySelectorAll('#receiptsTableBody tr');
+            rows.forEach(r => {
+              const dedCell = r.querySelector('.deductible-cell');
+              if (dedCell && dedCell.textContent.includes('$0.00')) {
+                r.style.display = 'none';
+              } else {
+                r.style.display = '';
+              }
+            });
+            document.getElementById('resultsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast("Filter // Showing Verified IRS Deductible Receipts");
+          } else if (stat === 'savings') {
+            const bracketArray = [0.15, 0.22, 0.25, 0.32, 0.37];
+            const currIdx = bracketArray.indexOf(activeTaxRate);
+            const nextIdx = (currIdx + 1) % bracketArray.length;
+            const nextRate = bracketArray[nextIdx];
+            const targetBtn = document.querySelector(`.bracket-btn[data-rate="${nextRate}"]`);
+            if (targetBtn) targetBtn.click();
+          } else if (stat === 'shielded') {
+            if (toggleRedact) {
+              toggleRedact.checked = !toggleRedact.checked;
+              toggleRedact.dispatchEvent(new Event('change'));
+              playCyberSound('shield');
+              showToast(toggleRedact.checked ? "🔒 Client NDA Redaction: ENABLED" : "🔓 Public Raw Text View: ENABLED");
+            }
+          }
+        }
+      });
+    });
+
+    // 60FPS Physics Engine Loop
+    function run3DPhysicsLoop() {
+      trackedItems.forEach(item => {
+        // Friction & Inertia Momentum
+        if (!item.isDragging) {
+          if (Math.abs(item.dragVelX) > 0.05 || Math.abs(item.dragVelY) > 0.05) {
+            item.targetRotY += item.dragVelX;
+            item.targetRotX += item.dragVelY;
+            item.dragVelX *= 0.90;
+            item.dragVelY *= 0.90;
+          } else {
+            item.dragVelX = 0;
+            item.dragVelY = 0;
+            if (!item.isHovered) {
+              item.targetRotX = 0;
+              item.targetRotY = 0;
+              item.targetTransZ = 0;
+              item.targetScale = 1;
+              item.targetGlareOpacity = 0;
+              item.targetRimOpacity = 0;
+            }
+          }
+        }
+
+        // Smooth Lerp
+        const lerpRot = item.isDragging ? 0.38 : 0.14;
+        const lerpPos = 0.18;
+        item.rotX += (item.targetRotX - item.rotX) * lerpRot;
+        item.rotY += (item.targetRotY - item.rotY) * lerpRot;
+        item.transZ += (item.targetTransZ - item.transZ) * lerpPos;
+        item.scale += (item.targetScale - item.scale) * lerpPos;
+        item.glareOpacity += (item.targetGlareOpacity - item.glareOpacity) * 0.16;
+        item.rimOpacity += (item.targetRimOpacity - item.rimOpacity) * 0.16;
+
+        // Apply Transform & Custom Properties
+        item.el.style.transform = `perspective(${item.perspective}px) rotateX(${item.rotX.toFixed(2)}deg) rotateY(${item.rotY.toFixed(2)}deg) translateZ(${item.transZ.toFixed(1)}px) scale(${item.scale.toFixed(3)})`;
+        item.el.style.setProperty('--glare-x', item.glareX.toFixed(3));
+        item.el.style.setProperty('--glare-y', item.glareY.toFixed(3));
+        item.el.style.setProperty('--glare-opacity', item.glareOpacity.toFixed(3));
+        item.el.style.setProperty('--rot-y', `${item.rotY.toFixed(1)}deg`);
+        item.el.style.setProperty('--rim-opacity', item.rimOpacity.toFixed(3));
+      });
+
+      requestAnimationFrame(run3DPhysicsLoop);
+    }
+
+    run3DPhysicsLoop();
+  }
+
+  // Initialize Master 3D Engine
+  init3DInteractables();
 });

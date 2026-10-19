@@ -1,0 +1,15 @@
+Uber Technologies, Inc.
+1455 Market St, San Francisco, CA
+TRIP RECEIPT: 2026-10-14 17:35
+
+Trip: Seattle Downtown Office -> Bellevue Tech Campus
+Passenger: Senior Engineer
+
+Uber Comfort Fare:                             $34.20
+Tolls & Surcharges:                             $3.30
+Tip:                                            $5.00
+TOTAL:                                         $42.50
+
+Paid via Apple Pay (Mastercard ending in 8112).
+Business Purpose: Urgent on-site emergency incident response trip to client Bellevue server room.
+Eligible for IRS Schedule C Line 24a (Travel and Transportation).
