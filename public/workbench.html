@@ -480,57 +480,6 @@
       </div>
     </section>
 
-    <!-- Interactive Cyberdeck Unix Terminal Holodeck -->
-    <section class="wb-panel terminal-section">
-      <div class="wb-panel-header">
-        <div class="panel-tag">// UNIX STREAM HOLODECK</div>
-        <div class="header-flex-row">
-          <h2>⌨️ Composable POSIX Pipeline</h2>
-          <span class="compliance-badge">STDIN ➔ STDOUT</span>
-        </div>
-      </div>
-      <p class="radar-explainer">
-        GhostLedger is fully composable with standard Unix pipes. Click any command pill below to execute in the local pipeline simulator:
-      </p>
-
-      <div class="terminal-deck">
-        <div class="deck-pills">
-          <button class="term-btn active" data-cmd="json-pipe">
-            <code>cat invoice.txt | ghostledger -q -f json | jq .</code>
-          </button>
-          <button class="term-btn" data-cmd="awk-tsv">
-            <code>ghostledger samples/ -f tsv | awk -F'\t' '$4 ~ /Meals/'</code>
-          </button>
-          <button class="term-btn" data-cmd="redact-csv">
-            <code>cat client_dinner.txt | ghostledger -q -r -f csv</code>
-          </button>
-          <button class="term-btn" data-cmd="demo-audit">
-            <code>ghostledger demo</code>
-          </button>
-        </div>
-
-        <div class="term-window">
-          <div class="term-topbar">
-            <div class="term-dots">
-              <span class="tdot red"></span>
-              <span class="tdot yellow"></span>
-              <span class="tdot green"></span>
-            </div>
-            <span class="term-title">ghostledger@local-silicon:~ (zsh / bash)</span>
-            <span class="term-meta">100% AIR-GAPPED</span>
-          </div>
-          <pre class="term-body" id="termOutput"><span class="prompt">$ </span>cat invoice.txt | ghostledger -q -f json | jq .
-{
-  "merchant": "DigitalOcean Holdings, Inc.",
-  "total_amount": 90.50,
-  "category": "Software & Subscriptions",
-  "deductible_percentage": 1.0,
-  "deductible_amount": 90.50,
-  "irs_audit_notes": "IRS Schedule C Line 18: 100% deductible cloud hosting and software services."
-}</pre>
-        </div>
-      </div>
-    </section>
 
     <!-- Footer -->
     <footer class="wb-footer">
