@@ -1,0 +1,17 @@
+Lumen / CenturyLink Business
+1025 Enterprise Parkway, Denver, CO
+ACCOUNT #: 8941-2094-1
+Billing Date: 2026-10-05
+
+Description                                   Amount
+------------------------------------------------------
+Dedicated Gigabit Fiber Internet (1000 Mbps)  $120.00
+Static IP Address Allocation                   $15.00
+------------------------------------------------------
+Subtotal:                                     $135.00
+Taxes & Regulatory Fees:                       $12.50
+TOTAL AMOUNT DUE:                             $147.50
+
+Payment: Direct Debit from Business Checking ending 9012.
+Business Purpose: Dedicated primary high-speed fiber internet for freelance client staging APIs and video consulting.
+Eligible for IRS Schedule C Line 25 (Utilities).

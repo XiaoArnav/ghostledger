@@ -1,0 +1,18 @@
+Apex CyberSec Advisory LLC
+701 5th Ave, Seattle, WA
+INVOICE #APEX-2026-081
+Date: 2026-10-16
+Bill To: Private Receipt Engineering
+Client Matter: Project Apex Penetration Test (Strict NDA)
+
+Services Rendered:
+External API Penetration Test & Zero-Day Review (10 hrs)   $650.00
+-----------------------------------------------------------------
+Subtotal:                                                 $650.00
+Sales Tax:                                                  $0.00
+TOTAL INVOICE:                                            $650.00
+
+Payment: Wire transfer confirmation #WT98231.
+Auditor: Michael Vance, CISSP.
+Client Confidentiality Note: Client Acme Health Systems requested third-party security verification under NDA.
+Eligible for IRS Schedule C Line 11 (Contract Labor).
