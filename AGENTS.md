@@ -172,3 +172,4 @@ git push origin main
 2. **Preserve 3D Interactive Styling:** Keep `transform-style: preserve-3d`, specular glare variables, and lerp physics intact when editing frontend components.
 3. **Always Run Tests:** Execute `python3 -m unittest discover -s tests` before and after any modification to `privatereceipt/` or `api/`.
 4. **Preserve Documentation Integrity:** Maintain all existing comments, docstrings, and citations to IRS Schedule C sections.
+5. **GitHub Attribution & Streak Invariant:** Always commit with `user.name = XiaoArnav` and `user.email = 322868724+XiaoArnav@users.noreply.github.com` so every push registers toward the user's GitHub contribution streak.
